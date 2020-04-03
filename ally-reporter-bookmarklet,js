@@ -1,0 +1,532 @@
+javascript: (function() {	
+	/* SUPPORT FUNCTIONS*/
+	var loadResource = (function() {
+		// Function which returns a function: https://davidwalsh.name/javascript-functions
+		function _load(tag) {
+			return function(url) {
+				// This promise will be used by Promise.all to determine success or failure
+				return new Promise(function(resolve, reject) {
+					var element = document.createElement(tag);
+					var parent = 'body';
+					var attr = 'src';
+
+					// Important success and error for the promise
+					element.onload = function() {
+						resolve(url);
+					};
+					element.onerror = function() {
+					 reject(url);
+					};
+
+					// Need to set different attributes depending on tag type
+					switch(tag) {
+						case 'script':
+							element.async = true;
+							break;
+						case 'link':
+							element.type = 'text/css';
+							element.rel = 'stylesheet';
+							attr = 'href';
+							parent = 'head';
+					}
+
+					// Inject into document to kick off loading
+					element[attr] = url;
+					document[parent].appendChild(element);
+				});
+			};
+		}
+		return {
+			css: _load('link'),
+			js: _load('script'),
+			img: _load('img')
+		}
+	})();
+
+	function getTextPlusAlt(e) {
+		var ret = '';
+		if(e.nodeType === 3) // text nodeName
+			return e.textContent;
+		if(e.nodeType === 1 && !isVisible(e)) // hidden
+			return '';
+		if(e.nodeType === 1 && e.nodeName === 'IMG')
+			return (e.hasAttribute('alt') ? e.alt : '');
+		if(e.nodeType === 1) {
+			var c = e.childNodes;
+			if(c.length == 0) {
+				return e.innerText;
+			}
+			for(var i=0; i<c.length; i++) {
+				
+				ret += getTextPlusAlt(c[i]);
+			}
+			return ret;
+		}	
+		return 'ERROR';
+	}
+
+	function isVisible(e) {
+		for(var t = window.getComputedStyle(e), i = !1; e;) {
+			if("none" === t.display) return !1;
+			if(!i) {
+				if("hidden" === t.visibility) 
+					return !1;
+				"visible" === t.visibility && (i = !0)
+			}
+			if("true" === e.getAttribute("aria-hidden")) 
+				return !1;
+			e = e.parentElement;
+			try {
+				t = window.getComputedStyle(e)
+			} catch (e) {
+				return !0
+			}
+		}
+		return !0
+	 }
+
+	 function isVisuallyHidden(e) {
+		var t = e.getBoundingClientRect(e);
+		if("absolute" === window.getComputedStyle(e).position) {
+			if(t.width <= 1 && t.height <= 1) 
+				return !0;
+			if(t.right <= 0) 
+				return !0
+		}
+	 }
+
+	/* HEADINGS CODE */
+	function getHeadingsOutline() {
+		var e = 0;
+		var t = document.querySelectorAll('h1,h2,h3,h4,h5,h6,h7,[role="heading"]');
+		var i = [];
+		for(o = 0; o < t.length; o++) {
+			var n = t[o],
+				 l = isVisible(t[o]),
+				 r = parseInt("heading" == n.getAttribute("role") && n.getAttribute("aria-level") || n.nodeName.substr(1));
+			if(l) {
+				 var d = r > e && r !== e + 1;
+				 e = r
+			} 
+			else 
+				d = !1;
+			i.push({
+				visible: l,
+				visuallyhidden: l && isVisuallyHidden(n),
+				wrong: d,
+				level: r,
+				el: n
+			})
+		}
+		return i;
+	 }	
+
+	function outputHeadings() {
+		var outline = getHeadingsOutline();
+		var ret = '';
+		ret += 'HEADINGS\n';
+		ret += 'Level\tText\tVisibility\tCorrect\n';
+		for(i = 0; i < outline.length; i++) {
+				var o = outline[i];
+			if(!o.visible) continue;
+				ret += 'H' + o.level + '\t' + o.el.textContent.replace(/\s+/g, " ");
+			ret += '\t' + !o.visuallyhidden;
+			ret += '\t' + !o.wrong;
+			ret += '\n';
+		}		
+		ret += '\n';
+		return ret;
+	}
+
+
+	/* POSSIBLE HEADINGS */
+	function outputPossibleHeadings() {
+		var e = document.querySelectorAll('p,div,span');
+		var ret = '';
+		var i;
+		
+		for(i=0; i<e.length; i++) {
+			var t = e[i].innerText.trim();
+			var s = window.getComputedStyle(e[i]);
+			if(s['display'] === 'block' && t.length > 0 && t.length <= 100) {
+				if(parseInt(s['font-size']) >= 20 || parseInt(s['font-weight']) > 400) {
+					ret += e[i].nodeName + '\t';
+					ret += t + '\t' + t.length + '\t';
+					ret += s['font-size'] + '\t' + s['font-weight'] + '\n';
+				}
+			}
+			
+		}
+		if(ret.length > 0) {
+			ret = 'Node\tText\tLength\tSize\tWeight\n' + ret;
+		}
+		else {
+			ret += 'No possible headings detected\n';
+		}
+		ret = 'POSSIBLE HEADINGS\n' + ret + '\n';
+		return ret;
+	}
+	
+	
+	/* LANDMARKS */
+	function outputLandmarks() {
+		var i;
+		var f = document.querySelectorAll('[role=main], [role=search], \
+		                                   [role=banner], [role=contentinfo], \
+		                                   [role=navigation], [role=complementary], \
+		                                   [role=application], main, banner, \
+		                                   footer, header, aside, nav');
+													  
+		var e = [];
+		for(i=0; i<f.length; i++) 
+			if(isVisible(f[i])) 
+				e.push(f[i]);
+				
+		var ret = 'LANDMARKS\n';
+		if(e.length == 0) {
+			ret += 'No landmarks\n\n';
+			return ret;
+		}
+	
+		/* determine hierarchical levels:
+         e[i].pIndex is	the "parent" of e[i]
+			e[i].level is the nesting level
+		*/
+		e[0].pIndex = null;
+		for(i=1; i<e.length; i++) {
+			if(e[i-1].contains(e[i]))
+				e[i].pIndex = i-1;
+			else {
+				j = 2;
+				e[i].pIndex = null;
+				while(i-j >= 0) {
+					if(e[i-j].contains(e[i]))
+						e[i].pIndex = i-j;
+					j++;
+				}
+			}
+		}
+		for(i=0;i<e.length; i++) {
+			e[i].level = 0;
+			p = e[i].pIndex;
+			while(p != null) {
+				e[i].level += 1;
+				p = e[p].pIndex;
+			}
+		}
+
+		/* output */
+		ret += 'Level\tNode\tRole\tName\tDescription\tVisibility\n';
+		for(i=0; i<e.length; i++) {
+			n = getAccName(e[i]);
+			ret += (e[i].level + 1) + '\t' + e[i].nodeName;
+			ret += '\t' + (e[i].hasAttribute('role') ? e[i].getAttribute('role') : '');
+			ret += '\t' + n.name + '\t' + n.desc;
+			ret += '\t' + !isVisuallyHidden(e[i]) + '\n';
+		}
+		
+		ret += '\n';
+		return ret;
+	}
+	
+
+	/* AXE RESULTS */
+	function outputAxeResults(rep) {
+		var ret, tmp, i, a, n;
+		var ret = '';
+		ret += 'AXE REPORT\n';		
+		/* test instance */
+		a = rep.testEnvironment;
+		ret += 'Browser Instance\tWidth\tHeight\n';
+		ret += a['userAgent'] + '\t' + a['windowWidth'] + '\t' + a['windowHeight'] + '\n';
+		/* incompletes */
+		a = rep.incomplete;
+		if(a.length > 0) {						
+			tmp = 'Description\tURL\tInstances\n';
+			n = 0;
+			for(i=0; i<a.length; i++) {
+				tmp += a[i].help + '\t' + a[i].helpUrl + '\t' + a[i].nodes.length + '\n';
+				n += a[i].nodes.length;
+			}
+			ret += 'Incompletes\t' + n + '\n';
+			ret += tmp;
+		}
+
+		/* violations */
+		a = rep.violations;
+		if(a.length > 0) {						
+			tmp = 'Description\tURL\tInstances\n';
+			n = 0;
+			for(i=0; i<a.length; i++) {
+				tmp += a[i].help + '\t' + a[i].helpUrl + '\t' + a[i].nodes.length + '\n';
+				n += a[i].nodes.length;
+			}
+			ret += 'Violations\t' + n + '\n';
+			ret += tmp;
+		}
+		
+		ret += '\n';
+		return ret;
+	}
+	
+	/* TABBABLES */
+	function outputTabbables() {
+		var e, i, m;
+		var ret = '';
+		ret += 'TABBING REPORT\n';	
+		var t = tabbable(document.body);
+		if(t.length == 0) 
+			ret += 'No tabbable elements on page';
+		else 
+			ret += '#\tType\tName\tDescription\tTabindex\tQuestionable\tRedundant Title\tEmpty\n';
+		for(i=0; i<t.length; i++) {
+			e = t[i];
+			n = window.getAccName(e);
+			ret += (i+1) + '\t' + e.nodeName + '\t';
+			ret += n.name + '\t' + n.desc + '\t';
+			ret += (e.hasAttribute('tabindex') ? e.tabIndex : 'NA') + '\t';
+			ret += isQuestionableHeading(n.name) + '\t';
+			if(e.hasAttribute('title') && e.title == n.name)
+				ret += 'TRUE';
+			ret += '\t';
+			if(e.nodeName === 'BUTTON' || e.nodeName === 'A')
+				if (getTextPlusAlt(e).trim() === '')
+					ret += 'TRUE';
+			
+			ret += '\n';
+		}
+		
+		ret += '\n';
+		return ret;
+	}
+	
+	function isQuestionableHeading(t) {
+		t = t.toLowerCase().replace(/[^\w\s]|_/g, "").replace(/\s+/g, " ").trim();
+		var contains = ['click here', 'click'];
+		var is = ['click here', 'here', 'more', 'details', 
+		          'more details', 'link', 'this page', 'continue', 
+					 'continue reading', 'read more', 'button'
+					];
+		var i;
+		for(i=0; i<contains.length; i++)
+			if(t.includes(contains[i]))
+				return true;
+		for(i=0; i<is.length; i++)
+			if(t == is[i])
+				return true;
+		return false;
+	}
+
+
+	/* IMAGES */
+
+	function checkAltQuality(e) {
+		var n = e.getAttribute('alt');
+		return n && n.length > 0 && ( - 1 !== n.search(/^(image|graphic|photo|photograph|drawing|painting|artwork|logo|bullet|button|arrow|more|spacer|blank|chart|table|diagram|graph|\*)$/i) || - 1 !== n.search(/(^(graphic of|bullet|image of).*)|(.*(image|graphic)$)|(^ +$)|.*(\.png|\.gif|\.jpeg|\.jpg|\.bmp)$/i));
+	}
+
+	function outputImages() {
+		var e = document.querySelectorAll('img,svg,[role="img"]');
+		var ret = '';
+		var i, t, f, j;
+		
+		for(i=0; i<e.length; i++) {
+			ret += e[i].nodeName;
+			if(e[i].hasAttribute('role'))
+				ret += ' role="' + e[i].attributes['role'].value + '"';
+			ret += '\t';
+			if(e[i].hasAttribute('alt')) {
+				t = e[i].attributes['alt'].value;
+				if(t.length == 0)
+					ret += '""';
+				else 
+					ret += t;
+			}
+			ret += '\t';
+			if(e[i].hasAttribute('aria-label')) {
+				t = e[i].attributes['aria-label'].value;
+				if(t.length == 0)
+					ret += '""';
+				else 
+					ret += t;
+			}
+			else if(e[i].hasAttribute('aria-labelledby')) {
+				var t = e[i].attributes['aria-labelledby'].value;
+				var f = document.getElementById(t);
+				if(f === null)
+					ret += '!missing!';
+				else 
+					ret += f.innerText;
+			}
+			ret += '\t';
+			if(e[i].hasAttribute('aria-describedby')) {
+				t = e[i].attributes['aria-describedby'].value;
+				f = document.getElementById(t);
+				if(f === null)
+					ret += '!missing!';
+				else 
+					ret += f.innerText;
+			}
+			ret += '\t';	
+			if(e[i].hasAttribute('title')) {
+				t = e[i].attributes['title'].value;
+				if(t.length == 0)
+					ret += '""';
+				else 
+					ret += t;
+			}
+			if(e[i].nodeName === 'SVG') {
+				f = e[i].querySelectorAll('title');
+				t = '';
+				for(j=0; j<f.length; j++)
+					t += ' | ' + f[i].textContent;
+				ret += t; 
+			}
+			ret += '\t';
+			if(e[i].nodeName === 'IMG' && checkAltQuality(e[i]))
+				ret += 'TRUE';
+			ret += '\t';		
+			ret += '\n';
+		}
+		if(ret.length > 0) {
+			ret = 'Node\tAlt\taria-label(by)\taria-description\tTitle\tSVG Title\tIffy\tHuman Opinion\n' + ret;
+		}
+		else {
+			ret += 'No images found\n';
+		}
+		ret = 'IMAGES\n' + ret + '\n';
+		return ret;
+	}
+
+
+	/* AUDIO/VIDEO */
+	function outputAudioVideo() {
+		var a, i, j, ret;
+		var e = [];
+		var c = document.querySelectorAll('embed');
+		for(i=0; i<c.length; i++) {
+			a = c[i].getAttribute('href');
+			if(a && - 1 !== a.search(/(\.mov|\.asx|\.wvx|\.wax|\.wmv|\.wma|\.ram|\.rpm|\.ra|\.rm)$/i))
+				e.push(c[i]);
+		}
+		c = document.querySelectorAll('video, audio, embed[type=\'video/quicktime\'], object[classid=\'clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B\'], embed[type=\'application/x-mplayer2\'], object[classid=\'clsid:22D6F312-B0F6-11D0-94AB-0080C74C7E95\'], object[classid=\'clsid:6BF52A52-394A-11d3-B153-00C04F79FAA6\'], embed[type=\'audio/x-pn-realaudio-plugin\'], object[classid=\'clsid:CFCDAA03-8BE4-11cf-B84B-0020AFBBCCFA\']');
+		for(i=0; i<c.length; i++)
+			e.push(c[i]);
+		c = document.querySelectorAll('iframe[src*="youtube"], iframe[src*="ensemble"], iframe[src*="vimeo"], iframe[src*="dailymotion"]');
+		for(i=0; i<c.length; i++)
+			e.push(c[i]);
+
+		ret = 'EMBEDDED AUDIO/VIDEO\n';
+		ret += 'Node\tSrc\tSources\tCaptioned\tTranscript\n'
+		for(i=0; i<e.length; i++) {
+			ret += e[i].nodeName + '\t';
+			if(e[i].hasAttribute('src'))
+				ret += e[i].src;
+			ret += '\t';
+			if(e[i].nodeName === 'VIDEO' || e[i].nodeName === 'AUDIO') {
+				var c = e[i].querySelectorAll('source');
+				for(j=0; j<c.length; j++) 
+					ret += '| ' + (c[j].hasAttribute('src') ? c[j].src : ''); 
+			}
+			ret += '\t\n';
+		}
+		ret += '\n';
+		return ret;	
+	}
+
+	/* REPORT CODE */
+	
+	function prepareIframe() {
+		var containerId = "a11y-bookmarklet";
+		var containerStyle = "position: fixed; top: 0; right: 0; max-height: 100%; box-shadow: 0 0 80px rgba(0,0,0,0.3); width: 20%; min-width: 320px; max-width: 450px; z-index: 1000001;";
+
+		var container = document.getElementById(containerId);
+		if(container)
+			document.body.removeChild(container);
+		container = document.createElement("DIV");
+		container.id = containerId;
+		container.style.cssText = containerStyle;
+		
+		var iframe = document.createElement("IFRAME");
+		iframe.id = "a11y-iframe";
+		iframe.style.width = "100%", iframe.style.height = "100%", iframe
+			.style.borderWidth = "0";
+		
+		var doc;
+
+		container.appendChild(iframe), iframe.onload = function() {
+			function e(e, t) {
+				var i = doc.getElementById(e),
+					o = doc.querySelector(".result");
+				if(i) {
+					var n = function(e) {
+						i.checked ? o.classList.add(t) : o.classList
+							.remove(t), e && updateHeight()
+					};
+					i.addEventListener("change", n, !1), i
+						.addEventListener("click", n, !1), n()
+				}
+			}
+			iframe.onload = function() {}, (doc = iframe.contentWindow
+				.document).open(), doc.write(
+				'<html> <head> <meta name="viewport" content="width=device-width,minimum-scale=1.0,initial-scale=1,user-scalable=yes"> <style> * { margin: 0; padding: 0; border: 0; box-sizing: border-box; } body { font: 14px/1.6 sans; color: #284900; background: rgba(255,255,255,0.95); white-space: nowrap; overflow-x: hidden; text-overflow: ellipsis; padding: 10px; padding-bottom: 30px; } header { display: flex; flex-wrap: nowrap; align-content: baseline; margin-bottom: 10px; } h1 { font-size: 1.2rem; flex: 1 1 auto; } legend { margin-right: 1em; font-weight: bold; } .button-close { padding: 5px 10px; border-radius: 5px; border: 0; font-size: inherit; color: white; background-color: #284900; cursor: pointer; } .button-close:hover { color: white; background-color: #284900; } textarea { border: solid 1px #284900; width: 100%; padding: 5px; resize: none; } </style> </head> <body> <header> <h1>A11Y Report</h1> <button class="button-close" data-action="close">Close</button> </header> <main id="result" class="result">  <textarea id="output" rows="10" wrap="off" spellcheck="false"></textarea> </main> </body> </html> '
+				), doc.close();
+			var t = doc.querySelector('[data-action="close"]');
+			t && t.addEventListener("click", function(e) {
+				document.body.removeChild(container);
+			});		
+		}, document.body.appendChild(container);	 
+
+		return iframe;
+	}
+	
+	function runReport() {
+		var iframe = prepareIframe();
+		iframe.style.display = 'none';
+		Promise.all([
+			loadResource.js('https://cdnjs.cloudflare.com/ajax/libs/axe-core/3.5.2/axe.min.js'), 
+			loadResource.js('https://unpkg.com/tabbable@4.0.0/index.js'), 
+			loadResource.js('https://whatsock.github.io/w3c-alternative-text-computation/Sample%20JavaScript%20Recursion%20Algorithm/recursion.min.js'),
+		]).then(function() {
+			axe.run().then( results => {writeReport(iframe,results)});
+		}).catch(function(url) {
+			alert('Resource failed to load:\n'+url);
+		});
+	}
+	
+	function writeReport(iframe,axe_results) {
+		iframe.style.display = 'block';
+		var doc = iframe.contentDocument;
+		document.getElementById('a11y-bookmarklet').style.height = doc['body'].scrollHeight + 'px';
+		var ta = doc.getElementById('output'); // textarea
+		ta.value = '';
+		
+		/* standard info */
+		ta.value += 'URL:\t' + document.location.href + '\n';
+		ta.value += 'DATETIME:\t' + (new Date()).toISOString() + '\n\n'
+		
+		/* axe report */
+		ta.value += outputAxeResults(axe_results);
+		
+		/* Output headings outline */
+		ta.value += outputHeadings();
+		
+		/* Output possible headings */
+		ta.value += outputPossibleHeadings();
+		
+		/* output landmarks */
+		ta.value += outputLandmarks();
+		
+		/* Tabbable elements checks */
+		ta.value += outputTabbables();
+		
+		/* Images */
+		ta.value += outputImages();
+		
+		/* Audio/Video */
+		ta.value += outputAudioVideo();
+	}
+	
+	/* RUNNING CODE */
+	runReport();	
+}());
