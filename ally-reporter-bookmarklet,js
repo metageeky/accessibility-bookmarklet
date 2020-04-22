@@ -1,4 +1,4 @@
-javascript: (function() {	
+javascript: (function() {
 	/* SUPPORT FUNCTIONS*/
 	var loadResource = (function() {
 		// Function which returns a function: https://davidwalsh.name/javascript-functions
@@ -57,11 +57,11 @@ javascript: (function() {
 				return e.innerText;
 			}
 			for(var i=0; i<c.length; i++) {
-				
+
 				ret += getTextPlusAlt(c[i]);
 			}
 			return ret;
-		}	
+		}
 		return 'ERROR';
 	}
 
@@ -69,11 +69,11 @@ javascript: (function() {
 		for(var t = window.getComputedStyle(e), i = !1; e;) {
 			if("none" === t.display) return !1;
 			if(!i) {
-				if("hidden" === t.visibility) 
+				if("hidden" === t.visibility)
 					return !1;
 				"visible" === t.visibility && (i = !0)
 			}
-			if("true" === e.getAttribute("aria-hidden")) 
+			if("true" === e.getAttribute("aria-hidden"))
 				return !1;
 			e = e.parentElement;
 			try {
@@ -88,9 +88,9 @@ javascript: (function() {
 	 function isVisuallyHidden(e) {
 		var t = e.getBoundingClientRect(e);
 		if("absolute" === window.getComputedStyle(e).position) {
-			if(t.width <= 1 && t.height <= 1) 
+			if(t.width <= 1 && t.height <= 1)
 				return !0;
-			if(t.right <= 0) 
+			if(t.right <= 0)
 				return !0
 		}
 	 }
@@ -107,8 +107,8 @@ javascript: (function() {
 			if(l) {
 				 var d = r > e && r !== e + 1;
 				 e = r
-			} 
-			else 
+			}
+			else
 				d = !1;
 			i.push({
 				visible: l,
@@ -119,7 +119,7 @@ javascript: (function() {
 			})
 		}
 		return i;
-	 }	
+	 }
 
 	function outputHeadings() {
 		var outline = getHeadingsOutline();
@@ -133,7 +133,7 @@ javascript: (function() {
 			ret += '\t' + !o.visuallyhidden;
 			ret += '\t' + !o.wrong;
 			ret += '\n';
-		}		
+		}
 		ret += '\n';
 		return ret;
 	}
@@ -144,7 +144,7 @@ javascript: (function() {
 		var e = document.querySelectorAll('p,div,span');
 		var ret = '';
 		var i;
-		
+
 		for(i=0; i<e.length; i++) {
 			var t = e[i].innerText.trim();
 			var s = window.getComputedStyle(e[i]);
@@ -155,7 +155,7 @@ javascript: (function() {
 					ret += s['font-size'] + '\t' + s['font-weight'] + '\n';
 				}
 			}
-			
+
 		}
 		if(ret.length > 0) {
 			ret = 'Node\tText\tLength\tSize\tWeight\n' + ret;
@@ -166,8 +166,24 @@ javascript: (function() {
 		ret = 'POSSIBLE HEADINGS\n' + ret + '\n';
 		return ret;
 	}
-	
-	
+
+	function isQuestionableHeading(t) {
+		t = t.toLowerCase().replace(/[^\w\s]|_/g, "").replace(/\s+/g, " ").trim();
+		var contains = ['click here', 'click'];
+		var is = ['click here', 'here', 'more', 'details',
+		          'more details', 'link', 'this page', 'continue',
+					 'continue reading', 'read more', 'button'
+					];
+		var i;
+		for(i=0; i<contains.length; i++)
+			if(t.includes(contains[i]))
+				return true;
+		for(i=0; i<is.length; i++)
+			if(t == is[i])
+				return true;
+		return false;
+	}
+
 	/* LANDMARKS */
 	function outputLandmarks() {
 		var i;
@@ -176,18 +192,18 @@ javascript: (function() {
 		                                   [role=navigation], [role=complementary], \
 		                                   [role=application], main, banner, \
 		                                   footer, header, aside, nav');
-													  
+
 		var e = [];
-		for(i=0; i<f.length; i++) 
-			if(isVisible(f[i])) 
+		for(i=0; i<f.length; i++)
+			if(isVisible(f[i]))
 				e.push(f[i]);
-				
+
 		var ret = 'LANDMARKS\n';
 		if(e.length == 0) {
 			ret += 'No landmarks\n\n';
 			return ret;
 		}
-	
+
 		/* determine hierarchical levels:
          e[i].pIndex is	the "parent" of e[i]
 			e[i].level is the nesting level
@@ -224,24 +240,24 @@ javascript: (function() {
 			ret += '\t' + n.name + '\t' + n.desc;
 			ret += '\t' + !isVisuallyHidden(e[i]) + '\n';
 		}
-		
+
 		ret += '\n';
 		return ret;
 	}
-	
+
 
 	/* AXE RESULTS */
 	function outputAxeResults(rep) {
 		var ret, tmp, i, a, n;
 		var ret = '';
-		ret += 'AXE REPORT\n';		
+		ret += 'AXE REPORT\n';
 		/* test instance */
 		a = rep.testEnvironment;
 		ret += 'Browser Instance\tWidth\tHeight\n';
 		ret += a['userAgent'] + '\t' + a['windowWidth'] + '\t' + a['windowHeight'] + '\n';
 		/* incompletes */
 		a = rep.incomplete;
-		if(a.length > 0) {						
+		if(a.length > 0) {
 			tmp = 'Description\tURL\tInstances\n';
 			n = 0;
 			for(i=0; i<a.length; i++) {
@@ -254,7 +270,7 @@ javascript: (function() {
 
 		/* violations */
 		a = rep.violations;
-		if(a.length > 0) {						
+		if(a.length > 0) {
 			tmp = 'Description\tURL\tInstances\n';
 			n = 0;
 			for(i=0; i<a.length; i++) {
@@ -264,21 +280,21 @@ javascript: (function() {
 			ret += 'Violations\t' + n + '\n';
 			ret += tmp;
 		}
-		
+
 		ret += '\n';
 		return ret;
 	}
-	
+
 	/* TABBABLES */
 	function outputTabbables() {
 		var e, i, m;
 		var ret = '';
-		ret += 'TABBING REPORT\n';	
+		ret += 'TABBING REPORT\n';
 		var t = tabbable(document.body);
-		if(t.length == 0) 
+		if(t.length == 0)
 			ret += 'No tabbable elements on page';
-		else 
-			ret += '#\tType\tName\tDescription\tTabindex\tQuestionable\tRedundant Title\tEmpty\n';
+		else
+			ret += '#\tType\tAcc Name\t Acc Description\tTabindex\tQuestionable\tRedundant Title\tEmpty Link\tHuman: Visible on Focus?\tHuman: Ordering Sense?\n';
 		for(i=0; i<t.length; i++) {
 			e = t[i];
 			n = window.getAccName(e);
@@ -292,30 +308,14 @@ javascript: (function() {
 			if(e.nodeName === 'BUTTON' || e.nodeName === 'A')
 				if (getTextPlusAlt(e).trim() === '')
 					ret += 'TRUE';
-			
+
 			ret += '\n';
 		}
-		
+
 		ret += '\n';
 		return ret;
 	}
-	
-	function isQuestionableHeading(t) {
-		t = t.toLowerCase().replace(/[^\w\s]|_/g, "").replace(/\s+/g, " ").trim();
-		var contains = ['click here', 'click'];
-		var is = ['click here', 'here', 'more', 'details', 
-		          'more details', 'link', 'this page', 'continue', 
-					 'continue reading', 'read more', 'button'
-					];
-		var i;
-		for(i=0; i<contains.length; i++)
-			if(t.includes(contains[i]))
-				return true;
-		for(i=0; i<is.length; i++)
-			if(t == is[i])
-				return true;
-		return false;
-	}
+
 
 
 	/* IMAGES */
@@ -328,18 +328,23 @@ javascript: (function() {
 	function outputImages() {
 		var e = document.querySelectorAll('img,svg,[role="img"]');
 		var ret = '';
-		var i, t, f, j;
-		
+		var i, t, f, j, n;
+
 		for(i=0; i<e.length; i++) {
-			ret += e[i].nodeName;
+			if(!isVisible(e[i])) continue;
+			n = e[i].nodeName.toUpperCase();
+			ret += n;
 			if(e[i].hasAttribute('role'))
 				ret += ' role="' + e[i].attributes['role'].value + '"';
+			ret += '\t';
+			if(e[i].hasAttribute('src'))
+				ret += e[i].src;
 			ret += '\t';
 			if(e[i].hasAttribute('alt')) {
 				t = e[i].attributes['alt'].value;
 				if(t.length == 0)
 					ret += '""';
-				else 
+				else
 					ret += t;
 			}
 			ret += '\t';
@@ -347,7 +352,7 @@ javascript: (function() {
 				t = e[i].attributes['aria-label'].value;
 				if(t.length == 0)
 					ret += '""';
-				else 
+				else
 					ret += t;
 			}
 			else if(e[i].hasAttribute('aria-labelledby')) {
@@ -355,7 +360,7 @@ javascript: (function() {
 				var f = document.getElementById(t);
 				if(f === null)
 					ret += '!missing!';
-				else 
+				else
 					ret += f.innerText;
 			}
 			ret += '\t';
@@ -364,32 +369,38 @@ javascript: (function() {
 				f = document.getElementById(t);
 				if(f === null)
 					ret += '!missing!';
-				else 
+				else
 					ret += f.innerText;
 			}
-			ret += '\t';	
+			ret += '\t';
 			if(e[i].hasAttribute('title')) {
 				t = e[i].attributes['title'].value;
 				if(t.length == 0)
 					ret += '""';
-				else 
+				else
 					ret += t;
 			}
-			if(e[i].nodeName === 'SVG') {
+			ret += '\t';
+			if(n === 'SVG') {
 				f = e[i].querySelectorAll('title');
 				t = '';
 				for(j=0; j<f.length; j++)
 					t += ' | ' + f[i].textContent;
-				ret += t; 
+				ret += t;
 			}
 			ret += '\t';
-			if(e[i].nodeName === 'IMG' && checkAltQuality(e[i]))
+			if(n === 'IMG' && checkAltQuality(e[i]))
 				ret += 'TRUE';
-			ret += '\t';		
+			ret += '\t';
+
+			n = getAccName(e[i]);
+			ret += n.name + '\t' + n.desc + '\t';
+
+			ret += '\t'; // for the human opinion
 			ret += '\n';
 		}
 		if(ret.length > 0) {
-			ret = 'Node\tAlt\taria-label(by)\taria-description\tTitle\tSVG Title\tIffy\tHuman Opinion\n' + ret;
+			ret = 'Node\tSRC\tAlt\taria-label(by)\taria-describedby\tTitle\tSVG Title\tIffy ALT\tAccesssible Name\tAccessible Description\tHuman: Opinion\n' + ret;
 		}
 		else {
 			ret += 'No images found\n';
@@ -412,11 +423,15 @@ javascript: (function() {
 		c = document.querySelectorAll('video, audio, embed[type=\'video/quicktime\'], object[classid=\'clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B\'], embed[type=\'application/x-mplayer2\'], object[classid=\'clsid:22D6F312-B0F6-11D0-94AB-0080C74C7E95\'], object[classid=\'clsid:6BF52A52-394A-11d3-B153-00C04F79FAA6\'], embed[type=\'audio/x-pn-realaudio-plugin\'], object[classid=\'clsid:CFCDAA03-8BE4-11cf-B84B-0020AFBBCCFA\']');
 		for(i=0; i<c.length; i++)
 			e.push(c[i]);
-		c = document.querySelectorAll('iframe[src*="youtube"], iframe[src*="ensemble"], iframe[src*="vimeo"], iframe[src*="dailymotion"]');
+		c = document.querySelectorAll('iframe[src*="youtube"], iframe[src*="youtu.be"], iframe[src*="ensemble"], iframe[src*="vimeo"], iframe[src*="dailymotion"]');
 		for(i=0; i<c.length; i++)
 			e.push(c[i]);
 
 		ret = 'EMBEDDED AUDIO/VIDEO\n';
+		if(e.length == 0) {
+			ret += 'No audio/video detected.\n\n'
+			return ret;
+		}
 		ret += 'Node\tSrc\tSources\tCaptioned\tTranscript\n'
 		for(i=0; i<e.length; i++) {
 			ret += e[i].nodeName + '\t';
@@ -425,17 +440,63 @@ javascript: (function() {
 			ret += '\t';
 			if(e[i].nodeName === 'VIDEO' || e[i].nodeName === 'AUDIO') {
 				var c = e[i].querySelectorAll('source');
-				for(j=0; j<c.length; j++) 
-					ret += '| ' + (c[j].hasAttribute('src') ? c[j].src : ''); 
+				for(j=0; j<c.length; j++)
+					ret += '| ' + (c[j].hasAttribute('src') ? c[j].src : '');
 			}
 			ret += '\t\n';
 		}
 		ret += '\n';
-		return ret;	
+		return ret;
 	}
 
+
+	/* LINKED FILES */
+	function outputLinkedFiles() {
+		var e = document.querySelectorAll('[href$="xls"], [href$="xlsx"], [href$="doc"], [href$="docx"], [href$="ppt"], [href$="pptx"], [href$="pdf"], [href$="rtf"], [href$="wpd"], [href$="ods"], [href$="odt"], [href$="odp"], [href$="sxw"], [href$="sxc"], [href$="sxd"], [href$="sxi"], [href$="pages"], [href$="key"]');
+
+		var i,f,g;
+		var ret = '';
+
+		ret = 'LINKED FILES\n';
+		if(e.length === 0)
+			ret += 'No linked files detected.\n';
+		else
+			ret += 'File Type\tLink Text\tFile Name\t\Labelled as tAccessibility Comments\n';
+		for(i=0; i<e.length; i++) {
+			f = e[i].href.substring( e[i].href.lastIndexOf('/') + 1 );
+			g = f.substring( f.lastIndexOf('.') + 1);
+			ret += g.toUpperCase() + '\t';
+			ret += e[i].innerText.trim() + '\t';
+			ret += f + '\t';
+			ret += '\n';
+		}
+		ret += '\n';
+		return ret;
+	}
+
+
+	/* FONT ICON DETECT */
+	function outputFontIconDetect() {
+		var ret = '';
+		var f = { '[class*="fa-"]':'Font Awesome',
+					 '[class*="icon-"]':'IcoMoon/Fontello',
+					 '[class*="zmdi"]':'Material Design Iconic',
+					 '[class*="gg-"]':'css.gg',
+					 '[class*="glyphicon-"]':'Glyphicons',
+					 '[class*="material-icons"]':'Material Icons'};
+		for(var i in f) {
+			if(document.querySelectorAll(i).length > 0)
+				ret += f[i] + '\n';
+		}
+		if(ret.length == 0)
+			ret = 'No icont fonts potentially detected.\n'
+
+		return 'ICON FONTS\n' + ret + '\n';
+	}
+
+
 	/* REPORT CODE */
-	
+
 	function prepareIframe() {
 		var containerId = "a11y-bookmarklet";
 		var containerStyle = "position: fixed; top: 0; right: 0; max-height: 100%; box-shadow: 0 0 80px rgba(0,0,0,0.3); width: 20%; min-width: 320px; max-width: 450px; z-index: 1000001;";
@@ -446,12 +507,12 @@ javascript: (function() {
 		container = document.createElement("DIV");
 		container.id = containerId;
 		container.style.cssText = containerStyle;
-		
+
 		var iframe = document.createElement("IFRAME");
 		iframe.id = "a11y-iframe";
 		iframe.style.width = "100%", iframe.style.height = "100%", iframe
 			.style.borderWidth = "0";
-		
+
 		var doc;
 
 		container.appendChild(iframe), iframe.onload = function() {
@@ -474,18 +535,18 @@ javascript: (function() {
 			var t = doc.querySelector('[data-action="close"]');
 			t && t.addEventListener("click", function(e) {
 				document.body.removeChild(container);
-			});		
-		}, document.body.appendChild(container);	 
+			});
+		}, document.body.appendChild(container);
 
 		return iframe;
 	}
-	
+
 	function runReport() {
 		var iframe = prepareIframe();
 		iframe.style.display = 'none';
 		Promise.all([
-			loadResource.js('https://cdnjs.cloudflare.com/ajax/libs/axe-core/3.5.2/axe.min.js'), 
-			loadResource.js('https://unpkg.com/tabbable@4.0.0/index.js'), 
+			loadResource.js('https://cdnjs.cloudflare.com/ajax/libs/axe-core/3.5.3/axe.min.js'),
+			loadResource.js('https://unpkg.com/tabbable@4.0.0/index.js'),
 			loadResource.js('https://whatsock.github.io/w3c-alternative-text-computation/Sample%20JavaScript%20Recursion%20Algorithm/recursion.min.js'),
 		]).then(function() {
 			axe.run().then( results => {writeReport(iframe,results)});
@@ -493,40 +554,47 @@ javascript: (function() {
 			alert('Resource failed to load:\n'+url);
 		});
 	}
-	
+
 	function writeReport(iframe,axe_results) {
 		iframe.style.display = 'block';
 		var doc = iframe.contentDocument;
 		document.getElementById('a11y-bookmarklet').style.height = doc['body'].scrollHeight + 'px';
 		var ta = doc.getElementById('output'); // textarea
 		ta.value = '';
-		
+
 		/* standard info */
 		ta.value += 'URL:\t' + document.location.href + '\n';
 		ta.value += 'DATETIME:\t' + (new Date()).toISOString() + '\n\n'
-		
+
 		/* axe report */
 		ta.value += outputAxeResults(axe_results);
-		
+
 		/* Output headings outline */
 		ta.value += outputHeadings();
-		
+
 		/* Output possible headings */
 		ta.value += outputPossibleHeadings();
-		
+
 		/* output landmarks */
 		ta.value += outputLandmarks();
-		
+
 		/* Tabbable elements checks */
 		ta.value += outputTabbables();
-		
+
 		/* Images */
 		ta.value += outputImages();
-		
+
 		/* Audio/Video */
 		ta.value += outputAudioVideo();
+
+		/* Linked Files */
+		ta.value += outputLinkedFiles();
+
+		/* Font Icon Detection */
+		ta.value += outputFontIconDetect();
+
 	}
-	
+
 	/* RUNNING CODE */
-	runReport();	
+	runReport();
 }());
