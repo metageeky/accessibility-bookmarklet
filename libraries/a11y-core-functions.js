@@ -116,10 +116,11 @@ function processRequirements() {
 	var promises = [];
 			
 	fori=0; i<_reqs.length; i++) {
-		console.log(
+		console.log(i);
 		if( !(_reqs[i] in REQUIREMENTS) )
 			continue;
 		r = REQUIREMENTS[_reqs[i]];
+		console.log(r);
 		if(r.loaded())
 			continue;
 		p = loadRequirement(r.name);
