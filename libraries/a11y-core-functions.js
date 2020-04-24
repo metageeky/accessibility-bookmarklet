@@ -115,7 +115,7 @@ function processRequirements() {
 	console.log(_reqs);
 	var promises = [];
 			
-	fori=0; i<_reqs.length; i++) {
+	for(i=0; i<_reqs.length; i++) {
 		console.log(i);
 		if( !(_reqs[i] in REQUIREMENTS) )
 			continue;
@@ -160,6 +160,7 @@ function loadRequirement(req) {
 
 function runA11YTool(callback) {
 	var promises = processRequirements();
+	console.log('promises: ' + promises);
 	if(promises.length > 0) {
 		Promise.all(promises).then(function() {
 			if(A11Y_REQUIREMENTS.length == 0)
@@ -172,6 +173,8 @@ function runA11YTool(callback) {
 			removeLoadingNotice();
 		});
 	}
-	else	
+	else {
+		console.log('else');
 		callback();
+	}
 }	
