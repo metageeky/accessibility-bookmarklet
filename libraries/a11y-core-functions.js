@@ -161,7 +161,7 @@ function loadRequirement(req) {
 }
 
 function runA11YTool(callback) {
-	reallyRunA11YTool(reallyRunA11YTool,callback);
+	reallyRunA11YTool(runA11YTool,callback);
 }
 
 function reallyRunA11YTool(me,callback) {
@@ -178,7 +178,7 @@ function reallyRunA11YTool(me,callback) {
 				console.log(document.A11Y_REQUIREMENTS);
 				console.log(me);
 				console.log(callback);
-				runA11yTool(callback);
+				me(callback);
 			}
 		}).catch(function(req) {
 			console.log(req);
