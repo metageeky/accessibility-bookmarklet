@@ -169,13 +169,16 @@ function reallyRunA11YTool(me,callback) {
 	console.log('promises: ' + promises);
 	if(promises.length > 0) {
 		Promise.all(promises).then(function() {
-			if(document.A11Y_REQUIREMENTS.length == 0)
+			if(document.A11Y_REQUIREMENTS.length == 0) {
+				console.log('zero requirements: ' + document.A11Y_REQUIREMENTS.length);
 				callback();
+			}
 			else {
 				console.log('runTool else: ')
 				console.log(document.A11Y_REQUIREMENTS);
 				console.log(me);
-				me(me, callback);
+				console.log(callback);
+				runA11yTool(callback);
 			}
 		}).catch(function(req) {
 			console.log(req);
