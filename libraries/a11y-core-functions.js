@@ -167,9 +167,11 @@ function runA11YTool(callback) {
 		Promise.all(promises).then(function() {
 			if(document.A11Y_REQUIREMENTS.length == 0)
 				callback();
-			else
+			else {
+				console.log('runTool else: ')
+				console.log(document.A11Y_REQUIREMENTS);
 				runA11yTool(callback);
-				
+			}
 		}).catch(function(req) {
 			console.log(req);
 			alert('Resource failed to load:\n'+req);
