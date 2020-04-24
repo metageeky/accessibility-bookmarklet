@@ -144,9 +144,11 @@ function loadRequirement(req) {
 
 		// Important success and error for the promise
 		e.onload = function() {
+			console.log('loadRequirement: ' + req);
 			resolve(req);
 		};
 		e.onerror = function() {
+			console.log('loadRequirement: ' + req);
 			reject(req);
 		};
 
