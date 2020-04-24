@@ -159,7 +159,7 @@ function runA11YTool(callback) {
 			if(A11Y_REQUIREMENTS.length == 0)
 				callback();
 			else
-				processRequirements();
+				runA11yTool(callback);
 				
 		}).catch(function(req) {
 			alert('Resource failed to load:\n'+req);
