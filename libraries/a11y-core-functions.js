@@ -115,7 +115,7 @@ function processRequirements() {
 	console.log(_reqs);
 	var promises = [];
 			
-	for(i=0; i<_reqs.length; i++) {
+	for(i=0; i<_reqs.length; i++) { 
 		console.log(i);
 		if( !(_reqs[i] in REQUIREMENTS) )
 			continue;
