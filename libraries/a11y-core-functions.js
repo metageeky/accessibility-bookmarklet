@@ -132,7 +132,7 @@ function processRequirements() {
 
 // load individual requirement
 function loadRequirement(req) {
-	console.log('Load: ' + req.name);
+	console.log('Load: ' + req);
 	// only return a promise if known requirement and not loaded
 	if( !(req in REQUIREMENTS) )
 		return null;
