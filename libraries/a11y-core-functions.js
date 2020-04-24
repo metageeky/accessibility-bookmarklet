@@ -99,12 +99,12 @@ REQUIREMENTS['w3c-alternative-text-computation.js'] =
 REQUIREMENTS['general-report-tests.js'] = 
 	new Requirement('general-report-tests.js',
 	                'https://metageeky.github.io/accessibility-bookmarklet/libraries/a11y-general-report-tests.js',
-						 function() { return !(typeof _shibA11YGenRepTests === undefined) }
+						 function() { return !(typeof _shibA11YGenRepTests === 'undefined') }
 						);
 REQUIREMENTS['report-ui.js'] = 
 	new Requirement('general-report-tests.js',
 	                'https://metageeky.github.io/accessibility-bookmarklet/libraries/a11y-report-ui.js',
-						 function() { return !(typeof _shibA11YRepUI === undefined) }
+						 function() { return !(typeof _shibA11YRepUI === 'undefined') }
 						);						
 
 // create promises for the current requirements. 
