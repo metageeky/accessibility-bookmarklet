@@ -161,10 +161,10 @@ function loadRequirement(req) {
 }
 
 function runA11YTool(callback) {
-	reallyRunA11YTool(runA11YTool,callback);
+	reallyRunA11YTool(reallyRunA11YTool,callback);
 }
 
-function runA11YTool(me,callback) {
+function reallyRunA11YTool(me,callback) {
 	var promises = processRequirements();
 	console.log('promises: ' + promises);
 	if(promises.length > 0) {
