@@ -114,9 +114,9 @@ function processRequirements() {
 	document.A11Y_REQUIREMENTS = [];
 	console.log(reqs);
 	var promises = [];
-			
+
 	for(i=0; i<reqs.length; i++) { 
-		console.log(i);
+		console.log(i + ': ' + !(reqs[i] in REQUIREMENTS));
 		if( !(reqs[i] in REQUIREMENTS) )
 			continue;
 		r = REQUIREMENTS[reqs[i]];
