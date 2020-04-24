@@ -102,7 +102,7 @@ REQUIREMENTS['general-report-tests.js'] =
 						 function() { return !(typeof _shibA11YGenRepTests === 'undefined') }
 						);
 REQUIREMENTS['report-ui.js'] = 
-	new Requirement('general-report-tests.js',
+	new Requirement('report-ui.js',
 	                'https://metageeky.github.io/accessibility-bookmarklet/libraries/a11y-report-ui.js',
 						 function() { return !(typeof _shibA11YRepUI === 'undefined') }
 						);						
