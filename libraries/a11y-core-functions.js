@@ -171,6 +171,7 @@ function runA11YTool(callback) {
 				runA11yTool(callback);
 				
 		}).catch(function(req) {
+			console.log(req);
 			alert('Resource failed to load:\n'+req);
 			removeLoadingNotice();
 		});
