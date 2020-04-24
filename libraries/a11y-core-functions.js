@@ -123,7 +123,7 @@ function processRequirements() {
 		if(!p != null)
 			promises.push(p);
 	}
-	return p;
+	return promises;
 }
 
 // load individual requirement
