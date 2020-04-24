@@ -80,7 +80,7 @@ function Requirement(name, src, loaded) {
 	this.loaded = loaded;
 }
 
-REQUIREMENTS = [];
+var REQUIREMENTS = [];
 REQUIREMENTS['axe.min.js'] = 
 	new Requirement('axe.min.js',
 	                'https://metageeky.github.io/accessibility-bookmarklet/externals/axe.min.js',
@@ -109,18 +109,20 @@ REQUIREMENTS['report-ui.js'] =
 
 // create promises for the current requirements. 
 function processRequirements() {
+	var i,r,p;
 	var _reqs = Array.from(new Set(document.A11Y_REQUIREMENTS));
 	document.A11Y_REQUIREMENTS = [];
 	console.log(_reqs);
 	var promises = [];
 			
-	for(let i=0; i<_reqs.length; i++) {
+	fori=0; i<_reqs.length; i++) {
+		console.log(
 		if( !(_reqs[i] in REQUIREMENTS) )
 			continue;
-		let r = REQUIREMENTS[_reqs[i]];
+		r = REQUIREMENTS[_reqs[i]];
 		if(r.loaded())
 			continue;
-		let p = loadRequirement(r.name);
+		p = loadRequirement(r.name);
 		console.log('p: ' + p);
 		if(p != null)
 			promises.push(p);
