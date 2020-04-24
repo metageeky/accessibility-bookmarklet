@@ -121,6 +121,7 @@ function processRequirements() {
 		if(r.loaded())
 			continue;
 		let p = loadRequirement(r.name);
+		console.log('p: ' + p);
 		if(p != null)
 			promises.push(p);
 	}
