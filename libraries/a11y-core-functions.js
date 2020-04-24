@@ -170,8 +170,8 @@ function runA11YTool(callback) {
 			else {
 				console.log('runTool else: ')
 				console.log(document.A11Y_REQUIREMENTS);
-				console.log(runA11YTool.caller);
-				runA11yTool(callback);
+				//runA11yTool(callback);
+				arguments.callee(n-1);
 			}
 		}).catch(function(req) {
 			console.log(req);
