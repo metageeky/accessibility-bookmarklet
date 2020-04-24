@@ -165,7 +165,7 @@ function runA11YTool(callback) {
 	console.log('promises: ' + promises);
 	if(promises.length > 0) {
 		Promise.all(promises).then(function() {
-			if(A11Y_REQUIREMENTS.length == 0)
+			if(document.A11Y_REQUIREMENTS.length == 0)
 				callback();
 			else
 				runA11yTool(callback);
