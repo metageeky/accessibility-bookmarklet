@@ -174,6 +174,7 @@ function runA11YTool(callback) {
 			else {
 				console.log('runTool else: ')
 				console.log(document.A11Y_REQUIREMENTS);
+				console.log(this);
 				reRunA11yTool(callback);
 			}
 		}).catch(function(req) {
