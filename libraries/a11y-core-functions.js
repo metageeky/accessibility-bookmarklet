@@ -160,6 +160,10 @@ function loadRequirement(req) {
 	});
 }
 
+function reRunA11YTool(callback) {
+	runA11YTool(callback);
+}
+
 function runA11YTool(callback) {
 	var promises = processRequirements();
 	console.log('promises: ' + promises);
@@ -170,7 +174,7 @@ function runA11YTool(callback) {
 			else {
 				console.log('runTool else: ')
 				console.log(document.A11Y_REQUIREMENTS);
-				//runA11yTool(callback);
+				reRunA11yTool(callback);
 			}
 		}).catch(function(req) {
 			console.log(req);
