@@ -110,16 +110,16 @@ REQUIREMENTS['report-ui.js'] =
 // create promises for the current requirements. 
 function processRequirements() {
 	var i,r,p;
-	var _reqs = Array.from(new Set(document.A11Y_REQUIREMENTS));
+	var reqs = document.A11Y_REQUIREMENTS.slice();
 	document.A11Y_REQUIREMENTS = [];
-	console.log(_reqs);
+	console.log(reqs);
 	var promises = [];
 			
-	for(i=0; i<_reqs.length; i++) { 
+	for(i=0; i<reqs.length; i++) { 
 		console.log(i);
-		if( !(_reqs[i] in REQUIREMENTS) )
+		if( !(reqs[i] in REQUIREMENTS) )
 			continue;
-		r = REQUIREMENTS[_reqs[i]];
+		r = REQUIREMENTS[reqs[i]];
 		console.log(r);
 		if(r.loaded())
 			continue;
