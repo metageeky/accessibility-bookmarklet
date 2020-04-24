@@ -111,6 +111,7 @@ REQUIREMENTS['report-ui.js'] =
 function processRequirements() {
 	var _reqs = Array.from(new Set(document.A11Y_REQUIREMENTS));
 	document.A11Y_REQUIREMENTS = [];
+	console.log(_reqs);
 	var promises = [];
 			
 	for(let i=0; i<_reqs.length; i++) {
@@ -128,6 +129,7 @@ function processRequirements() {
 
 // load individual requirement
 function loadRequirement(req) {
+	console.log('Load: ' + req.name);
 	// only return a promise if known requirement and not loaded
 	if( !(req in REQUIREMENTS) )
 		return null;
