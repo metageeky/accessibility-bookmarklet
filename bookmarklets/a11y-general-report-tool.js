@@ -45,7 +45,8 @@ javascript: (function() {
 		runA11YTool(generateReport);
 	}
 	function generateReport() {
-		var iframe = prepareIframe();
+		console.log('generateReport()');
+		var iframe = createReportUI();
 		iframe.style.display = 'none';
 		axe.run().then( results => {writeReport(iframe,results)});
 		removeLoadingNotice();			
@@ -61,5 +62,5 @@ javascript: (function() {
 	var e = document.createElement('script');
 	e.onload = a11yStartup;
    e.src = 'https://metageeky.github.io/accessibility-bookmarklet/libraries/a11y-core-functions.js';
-   document.body.appendChild(src);
+   document.body.appendChild(e);
 }());
