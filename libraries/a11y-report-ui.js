@@ -4,9 +4,6 @@ if(typeof document.A11Y_REQUIREMENTS === 'undefined')
 
 var _shibA11YRepUI = 1;
 
-function updateHeight() {
-	
-
 function createReportUI() {
 	var containerId = "a11y-bookmarklet";
 	var containerStyle = "position: fixed; top: 10px; right: 10px; max-height: 100%; box-shadow: 0 0 80px rgba(0,0,0,0.3); min-width: 320px; max-width: 450px; z-index: 1000001;";
