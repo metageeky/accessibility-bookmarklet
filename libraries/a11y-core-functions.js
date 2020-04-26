@@ -109,7 +109,7 @@ REQUIREMENTS['report-ui.js'] =
 REQUIREMENTS['image-reviewer-ui.js'] = 
 	new Requirement('image-reviewer-ui.js',
 	                'https://metageeky.github.io/accessibility-bookmarklet/libraries/a11y-image-reviewer-ui.js',
-						 function() { return !(typeof _shibA11YRepUI === 'undefined') }
+						 function() { return !(typeof _shibA11YImgRevUI === 'undefined') }
 						);							
 
 // create promises for the current requirements. 
