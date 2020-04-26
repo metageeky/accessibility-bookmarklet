@@ -58,6 +58,7 @@ javascript: (function() {
 		document.A11Y_REQUIREMENTS = [];
 	document.A11Y_REQUIREMENTS.push('general-report-tests.js');
 	document.A11Y_REQUIREMENTS.push('report-ui.js');
+	document.A11Y_REQUIREMENTS.push('image-reviewer-ui.js');
 	
 	var e = document.createElement('script');
 	e.onload = a11yStartup;
