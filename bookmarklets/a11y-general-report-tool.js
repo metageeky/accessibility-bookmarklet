@@ -38,8 +38,8 @@ javascript: (function() {
 		
 
 		var iframe = createReportUI(rep);
-		var doc = iframe.contentWindow.document;
-		document.getElementById('a11y-bookmarklet').style.height = doc['body'].scrollHeight + 'px';
+		
+		//document.getElementById('a11y-bookmarklet').style.height = doc['body'].scrollHeight + 'px';
 
 		// var ta = doc.getElementById('output'); // textarea
 		// ta.value = rep;

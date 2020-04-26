@@ -63,6 +63,10 @@ function createReportUI(report) {
 		});						
 		t = doc.getElementById('output');
 		t.value = report;
+		
+		let h = iframe.contentWindow.document.body.offsetHeight + 'px';
+		iframe.style.height = h;
+		container.style.height = h;
 					
 	}, document.body.appendChild(container);
 
