@@ -3,7 +3,7 @@ javascript: (function() {
 
 	function writeReport(iframe,axe_results) {
 		iframe.style.display = 'block';
-		var doc = iframe.contentDocument;
+		var doc = iframe.contentWindow.document;
 		document.getElementById('a11y-bookmarklet').style.height = doc['body'].scrollHeight + 'px';
 		var ta = doc.getElementById('output'); // textarea
 		ta.value = '';
