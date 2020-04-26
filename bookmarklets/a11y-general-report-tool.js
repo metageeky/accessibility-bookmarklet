@@ -1,11 +1,9 @@
 javascript: (function() {
 	/* REPORT CODE */
 
-	function writeReport(iframe,axe_results) {
-		var doc = iframe.contentWindow.document;
-		document.getElementById('a11y-bookmarklet').style.height = doc['body'].scrollHeight + 'px';
+	function writeReport(axe_results) {
 		var rep = '';
-		
+			
 		/* standard info */
 		rep += 'URL:\t' + document.location.href + '\n';
 		rep += 'DATETIME:\t' + (new Date()).toISOString() + '\n\n'
@@ -37,8 +35,14 @@ javascript: (function() {
 		/* Font Icon Detection */
 		rep += outputFontIconDetect();
 		
-		var ta = doc.getElementById('output'); // textarea
-		ta.value = rep;
+		
+
+		var iframe = createReportUI(rep);
+		var doc = iframe.contentWindow.document;
+		document.getElementById('a11y-bookmarklet').style.height = doc['body'].scrollHeight + 'px';
+
+		// var ta = doc.getElementById('output'); // textarea
+		// ta.value = rep;
 	}
 
 
@@ -48,9 +52,7 @@ javascript: (function() {
 	}
 	
 	function generateReport() {
-		console.log('generateReport()');
-		var iframe = createReportUI();
-		axe.run().then( results => {writeReport(iframe,results)});
+		axe.run().then( results => {writeReport(results)});
 		removeLoadingNotice();			
 	}
 
