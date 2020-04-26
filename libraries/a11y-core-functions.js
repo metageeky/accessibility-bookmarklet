@@ -105,7 +105,12 @@ REQUIREMENTS['report-ui.js'] =
 	new Requirement('report-ui.js',
 	                'https://metageeky.github.io/accessibility-bookmarklet/libraries/a11y-report-ui.js',
 						 function() { return !(typeof _shibA11YRepUI === 'undefined') }
-						);						
+						);			
+REQUIREMENTS['image-reviewer-ui.js'] = 
+	new Requirement('image-reviewer-ui.js',
+	                'https://metageeky.github.io/accessibility-bookmarklet/libraries/a11y-image-reviewer-ui.js',
+						 function() { return !(typeof _shibA11YRepUI === 'undefined') }
+						);							
 
 // create promises for the current requirements. 
 function processRequirements() {
