@@ -1,10 +1,11 @@
-console.log('a11y-report-ui.js');
-
 // KNOWN_REQUIREMENTS Code for A11Y Tools in libraries directory
 if(typeof document.A11Y_REQUIREMENTS === 'undefined')
 	document.A11Y_REQUIREMENTS = [];
 
 var _shibA11YRepUI = 1;
+
+function updateHeight() {
+	
 
 function createReportUI() {
 	var containerId = "a11y-bookmarklet";

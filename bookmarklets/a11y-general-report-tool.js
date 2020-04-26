@@ -2,52 +2,54 @@ javascript: (function() {
 	/* REPORT CODE */
 
 	function writeReport(iframe,axe_results) {
-		iframe.style.display = 'block';
 		var doc = iframe.contentWindow.document;
 		document.getElementById('a11y-bookmarklet').style.height = doc['body'].scrollHeight + 'px';
-		var ta = doc.getElementById('output'); // textarea
-		ta.value = '';
-
+		var rep = '';
+		
 		/* standard info */
-		ta.value += 'URL:\t' + document.location.href + '\n';
-		ta.value += 'DATETIME:\t' + (new Date()).toISOString() + '\n\n'
+		rep += 'URL:\t' + document.location.href + '\n';
+		rep += 'DATETIME:\t' + (new Date()).toISOString() + '\n\n'
 
 		/* axe report */
-		ta.value += outputAxeResults(axe_results);
+		rep += outputAxeResults(axe_results);
 
 		/* Output headings outline */
-		ta.value += outputHeadings();
+		rep += outputHeadings();
 
 		/* Output possible headings */
-		ta.value += outputPossibleHeadings();
+		rep += outputPossibleHeadings();
 
 		/* output landmarks */
-		ta.value += outputLandmarks();
+		rep += outputLandmarks();
 
 		/* Tabbable elements checks */
-		ta.value += outputTabbables();
+		rep += outputTabbables();
 
 		/* Images */
-		ta.value += outputImages();
+		rep += outputImages();
 
 		/* Audio/Video */
-		ta.value += outputAudioVideo();
+		rep += outputAudioVideo();
 
 		/* Linked Files */
-		ta.value += outputLinkedFiles();
+		rep += outputLinkedFiles();
 
 		/* Font Icon Detection */
-		ta.value += outputFontIconDetect();
+		rep += outputFontIconDetect();
+		
+		var ta = doc.getElementById('output'); // textarea
+		ta.value = rep;
 	}
+
 
 	function a11yStartup() {
 		loadingNotice('A11Y Reporter is running...<br>Refresh page to cancel');
 		runA11YTool(generateReport);
 	}
+	
 	function generateReport() {
 		console.log('generateReport()');
 		var iframe = createReportUI();
-		iframe.style.display = 'none';
 		axe.run().then( results => {writeReport(iframe,results)});
 		removeLoadingNotice();			
 	}

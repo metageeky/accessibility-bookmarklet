@@ -68,9 +68,7 @@ function createImageReviewer()  {
 		doc.getElementById('cur').innerText = (doc._cur + 1);
 		doc.getElementById('tot').innerText = (doc._tot);
 		updateCurrentImage(doc);
-		
-		finishViewer(doc);
-		
+			
 	}, document.body.appendChild(container);
 	
 	return iframe;
