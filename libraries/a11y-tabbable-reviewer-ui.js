@@ -35,7 +35,7 @@ function createTabbingReviewer()  {
 	var doc;
 	container.appendChild(iframe), iframe.onload = function() { 
 		(doc = iframe.contentWindow.document).open(), doc.write(
-			'<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width,minimum-scale=1.0,initial-scale=1,user-scalable=yes"><style> * { margin:0; padding:0; border:0; box-sizing:border-box} body { overflow-y:hidden; background:#fff; font-size:12px; font-family:sans-serif} button::-moz-focus-inner { border:0} button { padding: 3px; font-size: 1em !important; color:#fff; background:#284900; border:2px solid #284900; cursor:pointer} button:focus,button:hover { background:#506b2f; border-color:#506b2f} button:focus { border-color:#fff; border-style:dotted} header { padding-left:10px; color:#fff; background-color:#284900; display:flex; flex-wrap:nowrap; align-content:baseline} h1 { font-size:1.2em; flex:1 1 auto; padding:8px 0} header button { padding:0 8px; font-size:1.1rem !important; } main { overflow-y: scroll; padding: 8px 10px;} #warning {display:none; font-size: 1.1em; text-align: center; font-weight: 700; color: #d00; } table { margin:0 auto} td { vertical-align:top; } tr td:first-of-type { padding-right:3px; font-weight:700} #instructions { text-align:left;} kbd { border: 1px solid #888; display:inline-block; font-size:.9em; font-weight:700; line-height:1; padding: 2px 4px; white-space:nowrap; } h2 {margin-top:4px; font-size:1.1em; font-weight:700; } ul {list-style-position: inside; padding-left:6px} ul li { margin-top:5px } </style><body><header><h1>A11Y Tabbing Reviewer</h1><button aria-label="close" id="tabclose">&#215;</button></header><main id="result"><div id="warning"></div><table role="presentation"><tr><td>AT:</td><td id="alt"><i>start of page</i></td></table><div id="instructions"><h2>Instructions:</h2><ul><li>Use <kbd>Tab</kbd> and <kbd>Shift+Tab</kbd> to move focus</li><li>Press <kbd>R</kbd> to reset to start of page</li><li>Press <kbd>F</kbd> to toggle outline of current focus</li></ul></div></main></body></html>'
+			'<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width,minimum-scale=1.0,initial-scale=1,user-scalable=yes"><style> * { margin:0; padding:0; border:0; box-sizing:border-box} body { overflow-y:hidden; background:#fff; font-size:12px; font-family:sans-serif} button::-moz-focus-inner { border:0} button { padding: 3px; font-size: 1em !important; color:#fff; background:#284900; border:2px solid #284900; cursor:pointer} button:focus,button:hover { background:#506b2f; border-color:#506b2f} button:focus { border-color:#fff; border-style:dotted} header { padding-left:10px; color:#fff; background-color:#284900; display:flex; flex-wrap:nowrap; align-content:baseline} h1 { font-size:1.2em; flex:1 1 auto; padding:8px 0} header button { padding:0 8px; font-size:1.1rem !important; } main { overflow-y: scroll; padding: 8px 10px;} #warning {display:none; font-size: 1.1em; text-align: center; font-weight: 700; color: #d00; margin-bottom: 5px} table { margin:0 auto} td { vertical-align:top; } tr td:first-of-type { padding-right:3px; font-weight:700} #instructions { text-align:left; padding-bottom: 5px;} kbd { border: 1px solid #888; display:inline-block; font-size:.9em; font-weight:700; line-height:1; padding: 2px 4px; white-space:nowrap; } h2 {margin-top:4px; font-size:1.2em; font-weight:700; } #showHide { padding:0; font-size:1em !important; line-height:1; width:17px; height:17px; font-weight:700;display:inline-flex; flex-direction:row; flex-wrap: nowrap; justify-content: center; align-content: center; align-items: center; } ul {display: none; list-style-position: inside; padding-left:22px; } ul li { margin-top:6px } </style><body><header><h1>A11Y Tabbing Reviewer</h1><button aria-label="close" id="tabclose">&#215;</button></header><main id="result"><div id="warning"></div><table role="presentation"><tr><td>AT:</td><td id="alt"><i>start of page</i></td></table><div id="instructions"><h2><button aria-expanded="false" aria-label="Show" id="showHide">&#43;</button> Instructions:  </h2><ul id="list" ><li>Use <kbd>Tab</kbd> and <kbd>Shift+Tab</kbd> to move focus</li><li>Press <kbd>R</kbd> to reset to start of page</li><li>Press <kbd>F</kbd> to toggle outline of current focus</li></ul></div></main></body></html>'
 		), doc.close();
 		
 		var t;
@@ -43,6 +43,23 @@ function createTabbingReviewer()  {
 		t && t.addEventListener('click', function(e) { 
 			closeTabReviewer();
 		});
+		t = doc.getElementById('showHide');
+		t && t.addEventListener('click', function(e) { 
+			if(this.attributes['aria-expanded'].value === 'false') {
+				this.setAttribute('aria-expanded',true);
+				this.setAttribute('aria-label', 'Hide');
+				this.innerHTML = '&#8722;';
+				doc.getElementById('list').style.display = 'block';	
+			}
+			else if(this.attributes['aria-expanded'].value === 'true') {
+				this.setAttribute('aria-expanded',false);
+				this.setAttribute('aria-label', 'Show');
+				this.innerHTML = '&#43;';
+				doc.getElementById('list').style.display = 'none';	
+			}
+			setMainHeight();
+		});
+
 				
 		// set up vertical scroll on main
 		window.onresize = setMainHeight;
@@ -214,7 +231,7 @@ function updateTabTracking(e) {
 				doc.getElementById('warning').style.display = 'none';
 			}
 			else { 
-				doc.getElementById('warning').innerText = 'Unexpected index change: ' + doc._cur + ' to ' + i;
+				doc.getElementById('warning').innerText = 'Unexpected index jump: ' + doc._cur + ' to ' + i;
 				doc.getElementById('warning').style.display = 'block';				
 			}
 			doc._cur = i;	
@@ -226,7 +243,7 @@ function updateTabTracking(e) {
 		doc._onKnownTab = true;
 	}
 	else { 
-		doc.getElementById('warning').innerText = 'UNEXPECTED FOCUS!!!';
+		doc.getElementById('warning').innerText = 'Undetected Focus';
 		doc.getElementById('warning').style.display = 'block';		
 		doc.getElementById('alt').innerHTML = '(???) ' + getAccName(e).name;		
 		doc._onKnownTab = false;		
@@ -244,7 +261,9 @@ function setMainHeight() {
 	if(!doc) return;
 	var if_h = iframe.getBoundingClientRect().height;
 	var he_h = doc.querySelector('header').getBoundingClientRect().height;
-	doc.querySelector('main').style.height = (if_h - he_h) + 'px';
+	var ma_h = doc.querySelector('main').getBoundingClientRect().height;
+	console.log('set maing height');
+	iframe.style.height = doc.body.getBoundingClientRect().height + 'px';
 }
 	
 function updateTabReviewer(doc) {
@@ -260,6 +279,7 @@ function updateTabReviewer(doc) {
 		buttons[3].disabled = true;
 		buttons[2].disabled = true;
 	}
+	setMainHeight()
 }
 
 function updateCurrentTab(doc) {
@@ -277,31 +297,3 @@ function updateCurrentTab(doc) {
 }
 
 	
-function loadScript(url, callback){
-
-    var script = document.createElement("script")
-    script.type = "text/javascript";
-
-    if (script.readyState){  //IE
-        script.onreadystatechange = function(){
-            if (script.readyState == "loaded" ||
-                    script.readyState == "complete"){
-                script.onreadystatechange = null;
-                callback();
-            }
-        };
-    } else {  //Others
-        script.onload = function(){
-            callback();
-        };
-    }
-
-    script.src = url;
-    document.getElementsByTagName("head")[0].appendChild(script);
-}
-
-loadScript('https://metageeky.github.io/accessibility-bookmarklet/externals/tabbable.js', function() {
-	loadScript('https://metageeky.github.io/accessibility-bookmarklet/externals/w3c-alternative-text-computation.js', function() {
-		createTabbingReviewer();
-	})
-});

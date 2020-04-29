@@ -19,7 +19,7 @@ function createImageReviewer()  {
 
 	var iframe = document.createElement("IFRAME");
 	iframe.id = 'a11y-img-viewer';
-	iframe.style.cssText = 'border: solid 2px #284900; width: 450px; max-width:80%; min-height:180px; height:80%; max-height: 80%';
+	iframe.style.cssText = 'border: solid 2px #284900; width: 450px; max-width:80%; min-height:180px; height:90%; max-height: 90%';
 	
 	var doc;
 	container.appendChild(iframe), iframe.onload = function() { 

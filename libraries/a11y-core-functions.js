@@ -111,6 +111,12 @@ REQUIREMENTS['image-reviewer-ui.js'] =
 	                'https://metageeky.github.io/accessibility-bookmarklet/libraries/a11y-image-reviewer-ui.js',
 						 function() { return !(typeof _shibA11YImgRevUI === 'undefined') }
 						);							
+REQUIREMENTS['tabbable-reviewer-ui.js'] = 
+	new Requirement('tabbable-reviewer-ui.js',
+	                'https://metageeky.github.io/accessibility-bookmarklet/libraries/a11y-tabbable-reviewer-ui.js',
+						 function() { return !(typeof _shibA11YTabRevUI === 'undefined') }
+						);	
+
 
 // create promises for the current requirements. 
 function processRequirements() {
