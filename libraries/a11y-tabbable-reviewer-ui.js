@@ -78,23 +78,25 @@ function createTabbingReviewer()  {
 	}, document.body.appendChild(container);
 
 	window.addEventListener('keyup', processKeys);
-	window.addEventListener('focus', trackFocus, true);  
-
+	window.addEventListener('focus', trackFocus, false);  
+	window.scrollTo(0,0);
 	return iframe;
 }
 
 function closeTabReviewer() {
 	document.body.removeChild(document.getElementById('a11y-tabbing-viewer'));
+	document.body.removeChild(document.getElementById('a11y-focus-box'));
 	window.removeEventListener('keyup',processKeys);
 	window.removeEventListener('focus',trackFocus, true);
 }
+
 function processKeys(evt) {
-	if(evt.key == 'r') {
+	if(evt.key.toLowerCase() === 'r') {
 		document.body.setAttribute('tabindex',0);
 		document.getElementById('a11y-tab-viewer').contentWindow.document._cur = 0;
 		document.body.focus();	
 	}
-	else if(evt.key == 'f') {
+	else if(evt.key.toLowerCase() === 'f') {
 		var fb = document.getElementById('a11y-focus-box');
 		if(!fb)
 			return;
@@ -111,10 +113,10 @@ function processKeys(evt) {
 		if(currFocus) 
 			fb.style.display = 'block';
 		else
-			fb.style.display = 'none';
-			
-		
+			fb.style.display = 'none';	
 	}
+	else if(evt.key == 'm')
+		alert(document.activeElement.getBoundingClientRect().top);
 }
 
 function trackFocus(evt) {
@@ -159,7 +161,9 @@ function moveDataBox(e) {
 		iframe.style.left = delta + 'px';
 	}
 	else {
-		var bRect = document.body.getBoundingClientRect()
+		
+		var vw = Math.min(document.documentElement.clientWidth, window.innerWidth || 0);
+		var vh = Math.min(document.documentElement.clientHeight, window.innerHeight || 0);
 		var iRect = iframe.getBoundingClientRect();		
 		var eRect = e.getBoundingClientRect();		
 		
@@ -169,12 +173,12 @@ function moveDataBox(e) {
 		var dx = 0, dy = 0;
 		if(eRect.top < delta)
 			dy = -(delta - eRect.top);
-		if(bRect.height - eRect.bottom < delta)
-			dy = delta - (bRect.height - eRect.bottom);
+		if(vh - eRect.bottom < delta)
+			dy = delta - (vh - eRect.bottom);
 		if(eRect.left < delta)
 			dx = -(delta - eRect.left);
-		if(bRect.width - eRect.right < delta)
-			dx = delta - (bRect.width - eRect.right);		
+		if(vw - eRect.right < delta)
+			dx = delta - (vw - eRect.right);		
 		window.scrollBy(dx,dy);
 
 		// update bounding boxes
@@ -183,15 +187,20 @@ function moveDataBox(e) {
 
 		// adjust x-axis places
 		var newLeft, newTop;
-		newLeft = eRect.left < delta ? delta : eRect.left;
-		// adjust if data box is off screen to the right;
-		if(newLeft + iRect.width + delta >= bRect.width)
-			newLeft = bRect.width - iRect.width - delta;
+		// generally try to keep the databox below e
+		newLeft = eRect.left + eRect.width + delta;
+		// adjust if data box is off screen to the right
+		if(newLeft + iRect.width + delta >= vw)
+			newLeft = eRect.left - delta - iRect.width;
+		// handle case if the left is off screen now by centering
+		if(newLeft <= delta)
+			newLeft = eRect.Left + (eRect.width/2.0) - (iRect.width/2.0);
+			
 
-		
 		// generally try to keep the databox below e
 		newTop = eRect.top + eRect.height + delta;
-		if(newTop + iRect.height + delta >= bRect.height)
+		// adjust if data box is off screen to the bottom
+		if(newTop + iRect.height + delta >= vh)
 			newTop = eRect.top - delta - iRect.height;
 		
 		iframe.style.left = newLeft + 'px';
@@ -262,38 +271,34 @@ function setMainHeight() {
 	var if_h = iframe.getBoundingClientRect().height;
 	var he_h = doc.querySelector('header').getBoundingClientRect().height;
 	var ma_h = doc.querySelector('main').getBoundingClientRect().height;
-	console.log('set maing height');
 	iframe.style.height = doc.body.getBoundingClientRect().height + 'px';
 }
 	
-function updateTabReviewer(doc) {
-	doc.getElementById('cur').innerText = (doc._cur + 1);		
-	var buttons = doc.querySelectorAll('#tbar button');
-	for(var i=0; i<4; i++) 
-		buttons[i].disabled = false;
-	if(doc._cur == 0) {
-		buttons[0].disabled = true;
-		buttons[1].disabled = true;
-	}
-	if(doc._cur == doc._tot - 1) {
-		buttons[3].disabled = true;
-		buttons[2].disabled = true;
-	}
-	setMainHeight()
+function loadScript(url, callback){
+
+    var script = document.createElement("script")
+    script.type = "text/javascript";
+
+    if (script.readyState){  //IE
+        script.onreadystatechange = function(){
+            if (script.readyState == "loaded" ||
+                    script.readyState == "complete"){
+                script.onreadystatechange = null;
+                callback();
+            }
+        };
+    } else {  //Others
+        script.onload = function(){
+            callback();
+        };
+    }
+
+    script.src = url;
+    document.getElementsByTagName("head")[0].appendChild(script);
 }
 
-function updateCurrentTab(doc) {
-	var i = doc._cur;
-	var e = doc._tabs[i];
-	
-	var accName = getAccName(e);
-	doc.getElementById('alt').textContent = accName.name;
-	doc.getElementById('long').textContent = accName.desc;
-	
-	console.log(e.getBoundingClientRect());
-	e.focus();
-	console.log(e.getBoundingClientRect());
-	
-}
-
-	
+loadScript('https://metageeky.github.io/accessibility-bookmarklet/externals/tabbable.js', function() {
+	loadScript('https://metageeky.github.io/accessibility-bookmarklet/externals/w3c-alternative-text-computation.js', function() {
+		createTabbingReviewer();
+	})
+});
