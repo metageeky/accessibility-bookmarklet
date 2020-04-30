@@ -69,6 +69,12 @@ function createReportUI(report) {
 				this.innerHTML = '&#8722;';
 				doc.getElementById('list').style.display = 'block';	
 			}	
+			else if(this.attributes['aria-expanded'].value === 'true') {
+				this.setAttribute('aria-expanded',false);
+				this.setAttribute('aria-label', 'Show');
+				this.innerHTML = '&#43;';
+				doc.getElementById('list').style.display = 'none';	
+			}
 		});
 		
 		t = doc.getElementById('output');
