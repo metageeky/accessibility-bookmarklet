@@ -327,32 +327,3 @@ function setMainHeight() {
 	var ma_h = doc.querySelector('main').getBoundingClientRect().height;
 	iframe.style.height = doc.body.getBoundingClientRect().height + 'px';
 }
-	
-function loadScript(url, callback){
-
-    var script = document.createElement("script")
-    script.type = "text/javascript";
-
-    if (script.readyState){  //IE
-        script.onreadystatechange = function(){
-            if (script.readyState == "loaded" ||
-                    script.readyState == "complete"){
-                script.onreadystatechange = null;
-                callback();
-            }
-        };
-    } else {  //Others
-        script.onload = function(){
-            callback();
-        };
-    }
-
-    script.src = url;
-    document.getElementsByTagName("head")[0].appendChild(script);
-}
-
-loadScript('https://metageeky.github.io/accessibility-bookmarklet/externals/tabbable.js', function() {
-	loadScript('https://metageeky.github.io/accessibility-bookmarklet/externals/w3c-alternative-text-computation.js', function() {
-		createTabbingReviewer();
-	})
-});
