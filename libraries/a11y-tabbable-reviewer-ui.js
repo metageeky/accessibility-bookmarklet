@@ -65,6 +65,7 @@ function createTabbingReviewer()  {
 		window.onresize = setMainHeight;
 		setMainHeight();		
 		// tabs and index
+		doc._firstTabHappened = false;
 		doc._cur = 0; // for body
 		doc._tabs = tabbable(document.body);
 		doc._onKnownTab = true;
@@ -126,15 +127,32 @@ function trackFocus(evt) {
 		return;
 	if(!evt.target.hasAttribute)
 		return;
+	
+	if(evt.target.nodeName === 'BODY' || evt.target.nodeName === 'HTML') {
+		updateTabTracking(evt.target);
+		return;
+	}
+	
+	if(!document.getElementById('a11y-tab-viewer').contentWindow.document._firstTabHappened) {
+		// first real tabbable
+		document.body.removeAttribute('tabindex');
+		evt.target.setAttribute('data-first-tabbable',true);
+		evt.target.addEventListener('blur', leftFirstTabbable);
+		document.getElementById('a11y-tab-viewer').contentWindow.document._firstTabHappened = true;
+	}
 	if(!evt.target.hasAttribute('data-has-tracking')) {
 		evt.target.addEventListener('focus', updateTabTracking);
 		evt.target.setAttribute('data-has-tracking',true);
 	}
-	if(evt.target.nodeName === 'BODY' || evt.target.nodeName === 'HTML') {
-		var fb = document.getElementById('a11y-focus-box');
-		if(!fb) fb.style.display = 'none';
+}
+
+function leftFirstTabbable(evt) {
+	var related = evt.relatedTarget;
+	if(!related)
+		return;
+	if(related.nodeName === 'HTML' || related.nodeName === 'BODY') {
+		updateTabTracking(related);
 	}
-	//updateTabTracking(evt.target);
 }
 
 function moveFocusBox(e) {
@@ -142,17 +160,18 @@ function moveFocusBox(e) {
 	if(!fb)
 		return;
 	fb.style.display = 'none';	
-	if(!e || !e.getBoundingClientRect)
+	if(!e)
 		return;
 
 	var bWidth = 5;
 	var pWidth = 7;
 
-	var r = e.getBoundingClientRect();
-
-	if(e.nodeName === 'BODY' || e.nodeName === 'HTML')
+	if(e.nodeName === 'BODY' || e.nodeName === 'HTML') {
+		fb.style.display = 'none';				
 		return;
+	}
 	else {
+		var r = e.getBoundingClientRect();
 		fb.style.top = (r.top - bWidth - pWidth) + 'px';
 		fb.style.left = (r.left - bWidth - pWidth) + 'px';
 		fb.style.width = (r.width + 2*bWidth + 2*pWidth) + 'px';
@@ -172,7 +191,7 @@ function moveDataBox(e) {
 		iframe.style.top = delta + 'px';
 		iframe.style.left = delta + 'px';
 	} 
-	else if(e.nodeName === 'BODY') {
+	else if(e.nodeName === 'BODY' || e.nodeName === 'HTML') {
 		iframe.style.top = delta + 'px';
 		iframe.style.left = delta + 'px';
 	}
@@ -224,7 +243,11 @@ function moveDataBox(e) {
 }
 
 function updateTabTracking(evt) {
-	var e = evt.target;
+	var e;
+	if(!evt.nodeName) // event object
+		e = evt.target;
+	else
+		e = evt;
 	var iframe = document.getElementById('a11y-tab-viewer');
 	if(!iframe) return;
 	var doc = iframe.contentWindow.document;
@@ -290,3 +313,4 @@ function setMainHeight() {
 	var ma_h = doc.querySelector('main').getBoundingClientRect().height;
 	iframe.style.height = doc.body.getBoundingClientRect().height + 'px';
 }
+	
