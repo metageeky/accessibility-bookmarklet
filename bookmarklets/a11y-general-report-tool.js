@@ -47,7 +47,7 @@ javascript: (function() {
 
 
 	function a11yStartup() {
-		loadingNotice('A11Y Reporter is running...<br>Refresh page to cancel');
+		loadingNotice('A11Y Reporter is loading...<br>Refresh page to cancel');
 		runA11YTool(generateReport);
 	}
 	

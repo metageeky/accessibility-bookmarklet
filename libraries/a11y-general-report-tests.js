@@ -1,4 +1,3 @@
-console.log('a11y-general-report-tests.js');
 
 // KNOWN_REQUIREMENTS Code for A11Y Tools in libraries directory
 if(typeof document.A11Y_REQUIREMENTS === 'undefined')

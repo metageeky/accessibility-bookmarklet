@@ -24,13 +24,13 @@ function createTabbingReviewer()  {
 		document.body.removeChild(focusBox);
 	focusBox = document.createElement('DIV');
 	focusBox.id = fBid;
-	focusBox.style.cssText = 'position: fixed; box-sizing: border-box; border: solid 8px #C4FB04; outline: dashed 8px #284900; outline-offset: -8px; padding: 0px; z-index: 1000002';
+	focusBox.style.cssText = 'position: fixed; box-sizing: border-box; border: solid 5px #C4FB04; outline: dashed 5px #284900; outline-offset: -5px; padding: 0px; z-index: 1000002';
 	document.body.appendChild(focusBox);
 	focusBox.setAttribute('data-tab-showfocus',false);
 
 	var iframe = document.createElement('IFRAME');
 	iframe.id = 'a11y-tab-viewer';
-	iframe.style.cssText = 'position:fixed; border: solid 2px #284900; width: 300px; max-width:80%; box-shadow: 10px 10px 10px 0px rgba(40,73,0,0.4);';
+	iframe.style.cssText = 'display:none; position:fixed; border: solid 2px #284900; width: 300px; max-width:80%; box-shadow: 10px 10px 10px 0px rgba(40,73,0,0.4);';
 	
 	var doc;
 	container.appendChild(iframe), iframe.onload = function() { 
@@ -74,11 +74,13 @@ function createTabbingReviewer()  {
 		}
 		document.body.setAttribute('tabindex',0);
 		document.body.focus();
+		moveFocusBox(document.activeElement);
+		iframe.style.display = 'block';
 			
 	}, document.body.appendChild(container);
 
 	window.addEventListener('keyup', processKeys);
-	window.addEventListener('focus', trackFocus, false);  
+	window.addEventListener('focus', trackFocus, true);  
 	window.scrollTo(0,0);
 	return iframe;
 }
@@ -110,17 +112,29 @@ function processKeys(evt) {
 		currFocus = !currFocus;
 		fb.setAttribute('data-tab-showfocus', currFocus);
 		
-		if(currFocus) 
+		if(currFocus) {
 			fb.style.display = 'block';
-		else
+		}
+		else {
 			fb.style.display = 'none';	
+		}
 	}
-	else if(evt.key == 'm')
-		alert(document.activeElement.getBoundingClientRect().top);
 }
 
 function trackFocus(evt) {
-	updateTabTracking(evt.target);
+	if(!evt.target)
+		return;
+	if(!evt.target.hasAttribute)
+		return;
+	if(!evt.target.hasAttribute('data-has-tracking')) {
+		evt.target.addEventListener('focus', updateTabTracking);
+		evt.target.setAttribute('data-has-tracking',true);
+	}
+	if(evt.target.nodeName === 'BODY' || evt.target.nodeName === 'HTML') {
+		var fb = document.getElementById('a11y-focus-box');
+		if(!fb) fb.style.display = 'none';
+	}
+	//updateTabTracking(evt.target);
 }
 
 function moveFocusBox(e) {
@@ -131,12 +145,14 @@ function moveFocusBox(e) {
 	if(!e || !e.getBoundingClientRect)
 		return;
 
-	var bWidth = 6;
-	var pWidth = 5;
+	var bWidth = 5;
+	var pWidth = 7;
 
 	var r = e.getBoundingClientRect();
 
-	if(e.nodeName !== 'BODY') {
+	if(e.nodeName === 'BODY' || e.nodeName === 'HTML')
+		return;
+	else {
 		fb.style.top = (r.top - bWidth - pWidth) + 'px';
 		fb.style.left = (r.left - bWidth - pWidth) + 'px';
 		fb.style.width = (r.width + 2*bWidth + 2*pWidth) + 'px';
@@ -150,7 +166,7 @@ function moveDataBox(e) {
 	var iframe = document.getElementById('a11y-tab-viewer');
 	if(!iframe) return;
 	
-	var delta = 18; // padding + border + 5 regarding the forced focus
+	var delta = 15; // padding + border + 5 regarding the forced focus
 	
 	if(!e || !e.getBoundingClientRect) {
 		iframe.style.top = delta + 'px';
@@ -166,7 +182,6 @@ function moveDataBox(e) {
 		var vh = Math.min(document.documentElement.clientHeight, window.innerHeight || 0);
 		var iRect = iframe.getBoundingClientRect();		
 		var eRect = e.getBoundingClientRect();		
-		
 		
 		// adjust scroll if possible
 	   // (e is already focus to, so it's whole content should be in screen);
@@ -208,7 +223,8 @@ function moveDataBox(e) {
 	}	
 }
 
-function updateTabTracking(e) {
+function updateTabTracking(evt) {
+	var e = evt.target;
 	var iframe = document.getElementById('a11y-tab-viewer');
 	if(!iframe) return;
 	var doc = iframe.contentWindow.document;
@@ -216,7 +232,7 @@ function updateTabTracking(e) {
 	if(typeof e === 'undefined')
 		e = document.activeElement;
 
-	if(e.nodeName == 'BODY') {
+	if(e.nodeName === 'BODY' || e.nodeName === 'HTML') {
 		doc.getElementById('warning').style.display = 'none';
 		doc.getElementById('alt').innerHTML = '<i>start of page</i>';
 		doc._cur = 0;
@@ -226,41 +242,42 @@ function updateTabTracking(e) {
 		moveFocusBox(e);		
 		return;
 	}
-	
 	document.body.removeAttribute('tabindex');
 	
-
-	if(e.hasAttribute && e.hasAttribute('data-tab-i')) {
-		var i = parseInt(e.attributes['data-tab-i'].value);
-		doc.getElementById('alt').innerHTML = '(' + i + ') ' + getAccName(e).name;		
-		var delta = Math.abs(doc._cur - i);
-			
-		if(doc._onKnownTab) { // knownTab to knownTab
-			if(delta <= 1) {
-				doc.getElementById('warning').style.display = 'none';
+	// use timeout to deal with race conditions with CSS updating
+	setTimeout(function() {
+		if(e.hasAttribute && e.hasAttribute('data-tab-i')) {
+			var i = parseInt(e.attributes['data-tab-i'].value);
+			doc.getElementById('alt').innerHTML = '(' + i + ') ' + getAccName(e).name;		
+			var delta = Math.abs(doc._cur - i);
+				
+			if(doc._onKnownTab) { // knownTab to knownTab
+				if(delta <= 1) {
+					doc.getElementById('warning').style.display = 'none';
+				}
+				else { 
+					doc.getElementById('warning').innerText = 'Unexpected index jump: ' + doc._cur + ' to ' + i;
+					doc.getElementById('warning').style.display = 'block';				
+				}
+				doc._cur = i;	
 			}
-			else { 
-				doc.getElementById('warning').innerText = 'Unexpected index jump: ' + doc._cur + ' to ' + i;
-				doc.getElementById('warning').style.display = 'block';				
+			else { // unknownTab to lnownTab
+				doc.getElementById('warning').innerText = 'Returned to known index';
+				doc.getElementById('warning').style.display = 'block';
 			}
-			doc._cur = i;	
+			doc._onKnownTab = true;
 		}
-		else { // unknownTab to lnownTab
-			doc.getElementById('warning').innerText = 'Returned to known index';
-			doc.getElementById('warning').style.display = 'block';
+		else { 
+			doc.getElementById('warning').innerText = 'Undetected Focus';
+			doc.getElementById('warning').style.display = 'block';		
+			doc.getElementById('alt').innerHTML = '(???) ' + getAccName(e).name;		
+			doc._onKnownTab = false;		
 		}
-		doc._onKnownTab = true;
-	}
-	else { 
-		doc.getElementById('warning').innerText = 'Undetected Focus';
-		doc.getElementById('warning').style.display = 'block';		
-		doc.getElementById('alt').innerHTML = '(???) ' + getAccName(e).name;		
-		doc._onKnownTab = false;		
-	}
-	
-	setMainHeight();
-	moveDataBox(e);
-	moveFocusBox(e);
+		
+		setMainHeight();
+		moveDataBox(e);
+		moveFocusBox(e);
+	}, 150);
 }
 
 function setMainHeight() {
@@ -273,32 +290,3 @@ function setMainHeight() {
 	var ma_h = doc.querySelector('main').getBoundingClientRect().height;
 	iframe.style.height = doc.body.getBoundingClientRect().height + 'px';
 }
-	
-function loadScript(url, callback){
-
-    var script = document.createElement("script")
-    script.type = "text/javascript";
-
-    if (script.readyState){  //IE
-        script.onreadystatechange = function(){
-            if (script.readyState == "loaded" ||
-                    script.readyState == "complete"){
-                script.onreadystatechange = null;
-                callback();
-            }
-        };
-    } else {  //Others
-        script.onload = function(){
-            callback();
-        };
-    }
-
-    script.src = url;
-    document.getElementsByTagName("head")[0].appendChild(script);
-}
-
-loadScript('https://metageeky.github.io/accessibility-bookmarklet/externals/tabbable.js', function() {
-	loadScript('https://metageeky.github.io/accessibility-bookmarklet/externals/w3c-alternative-text-computation.js', function() {
-		createTabbingReviewer();
-	})
-});

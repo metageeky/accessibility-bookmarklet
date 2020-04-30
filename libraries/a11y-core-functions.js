@@ -123,19 +123,15 @@ function processRequirements() {
 	var i,r,p;
 	var reqs = document.A11Y_REQUIREMENTS.slice();
 	document.A11Y_REQUIREMENTS = [];
-	console.log(reqs);
 	var promises = [];
 
 	for(i=0; i<reqs.length; i++) { 
-		console.log('processReq: ' + i);
 		if( !(reqs[i] in REQUIREMENTS) )
 			continue;
 		r = REQUIREMENTS[reqs[i]];
-		console.log(r.name + ': ' + r.loaded());
 		if(r.loaded())
 			continue;
 		p = loadRequirement(r.name);
-		console.log('p: ' + p);
 		if(p != null)
 			promises.push(p);
 	}
@@ -144,7 +140,6 @@ function processRequirements() {
 
 // load individual requirement
 function loadRequirement(req) {
-	console.log('Load: ' + req);
 	// only return a promise if known requirement and not loaded
 	if( !(req in REQUIREMENTS) )
 		return null;
@@ -156,11 +151,9 @@ function loadRequirement(req) {
 
 		// Important success and error for the promise
 		e.onload = function() {
-			console.log('loadRequirement: ' + req);
 			resolve(req);
 		};
 		e.onerror = function() {
-			console.log('loadRequirement: ' + req);
 			reject(req);
 		};
 
@@ -177,28 +170,20 @@ function runA11YTool(callback) {
 
 function reallyRunA11YTool(me,callback) {
 	var promises = processRequirements();
-	console.log('promises: ' + promises);
 	if(promises.length > 0) {
 		Promise.all(promises).then(function() {
 			if(document.A11Y_REQUIREMENTS.length == 0) {
-				console.log('zero requirements: ' + document.A11Y_REQUIREMENTS.length);
 				callback();
 			}
 			else {
-				console.log('runTool else: ')
-				console.log(document.A11Y_REQUIREMENTS);
-				console.log(me);
-				console.log(callback);
 				me(callback);
 			}
 		}).catch(function(req) {
-			console.log(req);
 			alert('Resource failed to load:\n'+req);
 			removeLoadingNotice();
 		});
 	}
 	else {
-		console.log('else');
 		callback();
 	}
 }	
