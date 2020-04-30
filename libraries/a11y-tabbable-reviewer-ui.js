@@ -289,7 +289,7 @@ function updateTabTracking(evt) {
 			doc._onKnownTab = true;
 		}
 		else { 
-			doc.getElementById('warning').innerText = 'Undetected Focus';
+			doc.getElementById('warning').innerText = 'Unexpected element has focus';
 			doc.getElementById('warning').style.display = 'block';		
 			doc.getElementById('alt').innerHTML = '(???) ' + getAccName(e).name;		
 			doc._onKnownTab = false;		
