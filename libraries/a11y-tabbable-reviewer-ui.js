@@ -30,7 +30,7 @@ function createTabbingReviewer()  {
 
 	var iframe = document.createElement('IFRAME');
 	iframe.id = 'a11y-tab-viewer';
-	iframe.style.cssText = 'display:none; position:fixed; border: solid 2px #284900; width: 300px; max-width:80%; box-shadow: 10px 10px 10px 0px rgba(40,73,0,0.4);';
+	iframe.style.cssText = 'position:fixed; border: solid 2px #284900; width: 300px; max-width:80%; box-shadow: 10px 10px 10px 0px rgba(40,73,0,0.4);';
 	
 	var doc;
 	container.appendChild(iframe), iframe.onload = function() { 
@@ -75,9 +75,7 @@ function createTabbingReviewer()  {
 		}
 		document.body.setAttribute('tabindex',0);
 		document.body.focus();
-		moveFocusBox(document.activeElement);
-		iframe.style.display = 'block';
-			
+		moveFocusBox(document.activeElement);			
 	}, document.body.appendChild(container);
 
 	window.addEventListener('keyup', processKeys);
