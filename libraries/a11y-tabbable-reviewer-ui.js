@@ -93,7 +93,9 @@ function closeTabReviewer() {
 	var e = document.querySelectorAll('[data-has-tracking]');
 	for(var i=0; i<e.length; i++)
 		e[i].removeEventListener('focus',updateTabTracking);
-	
+	e = document.querySelectorAll('[data-has-transition]');
+	for(var i=0; i<e.length; i++)
+		e[i].removeEventListener('transitionend',moveFocusBoxAfterTransition);
 }
 
 function processKeys(evt) {
@@ -146,6 +148,12 @@ function trackFocus(evt) {
 	if(!evt.target.hasAttribute('data-has-tracking')) {
 		evt.target.addEventListener('focus', updateTabTracking);
 		evt.target.setAttribute('data-has-tracking',true);
+		if(window.getComputedStyle(evt.target).transitionProperty !== '') {
+			if(!evt.target.hasAttribute('data-has-transition')) {
+				evt.target.setAttribute('data-has-transition',true);
+				evt.target.addEventListener('transitionend', moveFocusBoxAfterTransition)
+			}
+		}	
 	}
 }
 
@@ -182,6 +190,12 @@ function moveFocusBox(e) {
 		if(fb.hasAttribute('data-tab-showfocus') && fb.attributes['data-tab-showfocus'].value === 'true')
 			fb.style.display = 'block';
 	}
+}
+
+function moveFocusBoxAfterTransition(evt) {
+	// only update moveFocusBox if it has focus
+	if(evt.target == document.activeElement)
+		moveFocusBox(document.activeElement);	
 }
 
 function moveDataBox(e) {
@@ -270,40 +284,37 @@ function updateTabTracking(evt) {
 	}
 	document.body.removeAttribute('tabindex');
 	
-	// use timeout to deal with race conditions with CSS updating
-	setTimeout(function() {
-		if(e.hasAttribute && e.hasAttribute('data-tab-i')) {
-			var i = parseInt(e.attributes['data-tab-i'].value);
-			doc.getElementById('alt').innerHTML = '(' + i + ') ' + getAccName(e).name;		
-			var delta = Math.abs(doc._cur - i);
-				
-			if(doc._onKnownTab) { // knownTab to knownTab
-				if(delta <= 1) {
-					doc.getElementById('warning').style.display = 'none';
-				}
-				else { 
-					doc.getElementById('warning').innerText = 'Unexpected index jump: ' + doc._cur + ' to ' + i;
-					doc.getElementById('warning').style.display = 'block';				
-				}
-				doc._cur = i;	
+	if(e.hasAttribute && e.hasAttribute('data-tab-i')) {
+		var i = parseInt(e.attributes['data-tab-i'].value);
+		doc.getElementById('alt').innerHTML = '(' + i + ') ' + getAccName(e).name;		
+		var delta = Math.abs(doc._cur - i);
+			
+		if(doc._onKnownTab) { // knownTab to knownTab
+			if(delta <= 1) {
+				doc.getElementById('warning').style.display = 'none';
 			}
-			else { // unknownTab to lnownTab
-				doc.getElementById('warning').innerText = 'Returned to known index';
-				doc.getElementById('warning').style.display = 'block';
+			else { 
+				doc.getElementById('warning').innerText = 'Unexpected index jump: ' + doc._cur + ' to ' + i;
+				doc.getElementById('warning').style.display = 'block';				
 			}
-			doc._onKnownTab = true;
+			doc._cur = i;	
 		}
-		else { 
-			doc.getElementById('warning').innerText = 'Unexpected element has focus';
-			doc.getElementById('warning').style.display = 'block';		
-			doc.getElementById('alt').innerHTML = '(???) ' + getAccName(e).name;		
-			doc._onKnownTab = false;		
+		else { // unknownTab to lnownTab
+			doc.getElementById('warning').innerText = 'Returned to known index';
+			doc.getElementById('warning').style.display = 'block';
 		}
-		
-		setMainHeight();
-		moveDataBox(e);
-		moveFocusBox(e);
-	}, 150);
+		doc._onKnownTab = true;
+	}
+	else { 
+		doc.getElementById('warning').innerText = 'Unexpected element has focus';
+		doc.getElementById('warning').style.display = 'block';		
+		doc.getElementById('alt').innerHTML = '(???) ' + getAccName(e).name;		
+		doc._onKnownTab = false;		
+	}
+	
+	setMainHeight();
+	moveDataBox(e);
+	moveFocusBox(e);
 }
 
 function setMainHeight() {
@@ -317,3 +328,31 @@ function setMainHeight() {
 	iframe.style.height = doc.body.getBoundingClientRect().height + 'px';
 }
 	
+function loadScript(url, callback){
+
+    var script = document.createElement("script")
+    script.type = "text/javascript";
+
+    if (script.readyState){  //IE
+        script.onreadystatechange = function(){
+            if (script.readyState == "loaded" ||
+                    script.readyState == "complete"){
+                script.onreadystatechange = null;
+                callback();
+            }
+        };
+    } else {  //Others
+        script.onload = function(){
+            callback();
+        };
+    }
+
+    script.src = url;
+    document.getElementsByTagName("head")[0].appendChild(script);
+}
+
+loadScript('https://metageeky.github.io/accessibility-bookmarklet/externals/tabbable.js', function() {
+	loadScript('https://metageeky.github.io/accessibility-bookmarklet/externals/w3c-alternative-text-computation.js', function() {
+		createTabbingReviewer();
+	})
+});
