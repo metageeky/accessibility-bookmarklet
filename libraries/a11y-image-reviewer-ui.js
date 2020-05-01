@@ -29,7 +29,8 @@ function createImageReviewer()  {
 		
 		var t;
 		t = doc.getElementById('imgclose');
-		t && t.addEventListener("click", function(e)  { 
+		t && t.addEventListener("click", function(e)  {
+			window.scrollTo(doc._scrollX, doc._scrollY);
 			document.body.removeChild(container);
 		});
 		t = doc.getElementById('first');
@@ -62,6 +63,8 @@ function createImageReviewer()  {
 		setMainHeight();
 			
 		// images and index		
+		doc._scrollX = window.scrollX;
+		doc._scrollY = window.scrollY;
 		doc._images = getImages();		
 		doc._cur = 0;
 		doc._tot = doc._images.length;
@@ -100,22 +103,19 @@ function updateImageReviewer(doc) {
 }
 
 function getImages() {
-	var sX = window.scrollX;
-	var sY = window.scrollY;
 	var e = document.querySelectorAll('img,svg,[role="img"]');
 	var ret = [];
 	for(i=0; i<e.length; i++) {
 		if(!isVisible(e[i])) continue;
 		ret.push(e[i]);
-		e[i].scrollIntoView();
 	}
-	window.scrollTo(sX,sY);
 	return ret;					
 }
 
 function updateCurrentImage(doc) {
 	var i = doc._cur;
 	var e = doc._images[i];
+	e.scrollIntoView();
 	var ratio,w,h,brect,bbox;
 	var frame = document.getElementById('a11y-img-viewer');
 	var mw = doc.querySelector('.theimg').getBoundingClientRect().width;
@@ -159,33 +159,3 @@ function updateCurrentImage(doc) {
 	}
 
 }
-
-	
-function loadScript(url, callback){
-
-    var script = document.createElement("script")
-    script.type = "text/javascript";
-
-    if (script.readyState){  //IE
-        script.onreadystatechange = function(){
-            if (script.readyState == "loaded" ||
-                    script.readyState == "complete"){
-                script.onreadystatechange = null;
-                callback();
-            }
-        };
-    } else {  //Others
-        script.onload = function(){
-            callback();
-        };
-    }
-
-    script.src = url;
-    document.getElementsByTagName("head")[0].appendChild(script);
-}
-
-loadScript('https://metageeky.github.io/accessibility-bookmarklet/libraries/a11y-core-functions.js', function() {
-	loadScript('https://metageeky.github.io/accessibility-bookmarklet/externals/w3c-alternative-text-computation.js', function() {
-		createImageReviewer();
-	})
-});
