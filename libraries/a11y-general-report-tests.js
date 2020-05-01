@@ -318,7 +318,7 @@ function outputImages() {
 		ret += '\n';
 	}
 	if(ret.length > 0) {
-		ret = 'Node\tSRC\tAlt\taria-label(by)\taria-describedby\tTitle\tSVG Title\tIffy ALT\tAccesssible Name\tAccessible Description\tHuman: Opinion\n' + ret;
+		ret = 'Node\tSRC\tAlt\taria-label(by)\taria-describedby\tTitle\tSVG Title\tIffy ALT\tAccesssible Name\tAccessible Description\tHuman: Alt Quality\n' + ret;
 	}
 	else {
 		ret += 'No images found\n';
