@@ -60,8 +60,8 @@ function createImageReviewer()  {
 		// set up vertical scroll on main
 		window.onresize = setMainHeight;
 		setMainHeight();
-		
-		// images and index
+			
+		// images and index		
 		doc._images = getImages();		
 		doc._cur = 0;
 		doc._tot = doc._images.length;
@@ -100,12 +100,16 @@ function updateImageReviewer(doc) {
 }
 
 function getImages() {
+	var sX = window.scrollX;
+	var sY = window.scrollY;
 	var e = document.querySelectorAll('img,svg,[role="img"]');
 	var ret = [];
 	for(i=0; i<e.length; i++) {
 		if(!isVisible(e[i])) continue;
 		ret.push(e[i]);
+		e[i].scrollIntoView();
 	}
+	window.scrollTo(sX,sY);
 	return ret;					
 }
 
@@ -136,7 +140,7 @@ function updateCurrentImage(doc) {
 			f.style.height = 'auto';
 		}			
 	}	
-	if(e.nodeName === 'svg') {
+	else if(e.nodeName === 'svg') {
 		brect = e.getBoundingClientRect();
 		bbox = e.getBBox();
 		w = brect.width ? brect.width : bbox.width;
@@ -150,7 +154,38 @@ function updateCurrentImage(doc) {
 			f.style.margin = '-' + Math.round((1-ratio)*h/2) + 'px -' + Math.round((1-ratio)*w/2) + 'px';
 		}	
 	}
+	else {
+		doc.querySelector('.theimg').innerHTML = 'Odd case. Contact <a href="mailto:katherine.deibel@gmail.com">developer</a>';
+	}
 
 }
 
 	
+function loadScript(url, callback){
+
+    var script = document.createElement("script")
+    script.type = "text/javascript";
+
+    if (script.readyState){  //IE
+        script.onreadystatechange = function(){
+            if (script.readyState == "loaded" ||
+                    script.readyState == "complete"){
+                script.onreadystatechange = null;
+                callback();
+            }
+        };
+    } else {  //Others
+        script.onload = function(){
+            callback();
+        };
+    }
+
+    script.src = url;
+    document.getElementsByTagName("head")[0].appendChild(script);
+}
+
+loadScript('https://metageeky.github.io/accessibility-bookmarklet/libraries/a11y-core-functions.js', function() {
+	loadScript('https://metageeky.github.io/accessibility-bookmarklet/externals/w3c-alternative-text-computation.js', function() {
+		createImageReviewer();
+	})
+});
