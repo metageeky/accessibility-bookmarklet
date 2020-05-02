@@ -1,6 +1,4 @@
 javascript: (function() {
-	/* REPORT CODE */
-
 	function writeReport(axe_results) {
 		var rep = '';
 			
@@ -35,16 +33,8 @@ javascript: (function() {
 		/* Font Icon Detection */
 		rep += outputFontIconDetect();
 		
-		
-
 		var iframe = createReportUI(rep);
-		
-		//document.getElementById('a11y-bookmarklet').style.height = doc['body'].scrollHeight + 'px';
-
-		// var ta = doc.getElementById('output'); // textarea
-		// ta.value = rep;
 	}
-
 
 	function a11yStartup() {
 		loadingNotice('A11Y Reporter is loading...<br>Refresh page to cancel');
@@ -55,7 +45,6 @@ javascript: (function() {
 		axe.run().then( results => {writeReport(results)});
 		removeLoadingNotice();			
 	}
-
 	
 	// RUNNING CODE
 	if(typeof document.A11Y_REQUIREMENTS === 'undefined')
@@ -63,6 +52,7 @@ javascript: (function() {
 	document.A11Y_REQUIREMENTS.push('general-report-tests.js');
 	document.A11Y_REQUIREMENTS.push('report-ui.js');
 	document.A11Y_REQUIREMENTS.push('image-reviewer-ui.js');
+	document.A11Y_REQUIREMENTS.push('tabbable-reviewer-ui.js');
 	
 	var e = document.createElement('script');
 	e.onload = a11yStartup;
