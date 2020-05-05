@@ -24,7 +24,7 @@ function outputLibGuideInformation() {
 	ret += '\n';
 	
 	ret += 'Friendly URL:\t';
-	ret += (document.location.href.indexOf('c.php?') !== -1);
+	ret += (document.location.href.indexOf('c.php?') < 0);
 	ret += '\n';
 	
 	ret += 'Owner(s):\t';
