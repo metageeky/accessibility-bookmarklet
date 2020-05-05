@@ -105,7 +105,7 @@ function outputLibGuideImages() {
 			temp += cols[j] + '\t';
 		if(cols[0] == 'IMG') {
 			e = getImgBySrc(cols[1]);
-			if(e.hasAttribute('class' && e.getAttribute('class').indexOf('s-lg-book-cover') != -1)
+			if(e.hasAttribute('class') && e.getAttribute('class').indexOf('s-lg-book-cover') != -1)
 				temp += 'TRUE';
 		}
 		temp += '\t';
