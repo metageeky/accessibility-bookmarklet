@@ -6,6 +6,9 @@ javascript: (function() {
 		rep += 'TITLE:\t' + document.title + '\n'; 
 		rep += 'URL:\t' + document.location.href + '\n';
 		rep += 'DATETIME:\t' + (new Date()).toISOString() + '\n\n'
+		
+		/* Libguide Information */
+		rep += outputLibGuideInformation();
 
 		/* axe report */
 		rep += outputAxeResults(axe_results);
@@ -23,13 +26,16 @@ javascript: (function() {
 		rep += outputTabbables();
 
 		/* Images */
-		rep += outputImages();
+		rep += outputLibGuideImages();
 
 		/* Audio/Video */
 		rep += outputAudioVideo();
 
 		/* Linked Files */
 		rep += outputLinkedFiles();
+
+		/* LibGuide Assets */
+		rep += outputLibGuideAssets();
 
 		/* Font Icon Detection */
 		rep += outputFontIconDetect();
@@ -51,6 +57,7 @@ javascript: (function() {
 	if(typeof document.A11Y_REQUIREMENTS === 'undefined')
 		document.A11Y_REQUIREMENTS = [];
 	document.A11Y_REQUIREMENTS.push('general-report-tests.js');
+	document.A11Y_REQUIREMENTS.push('libguide-report-tests.js');
 	document.A11Y_REQUIREMENTS.push('report-ui.js');
 	document.A11Y_REQUIREMENTS.push('image-reviewer-ui.js');
 	document.A11Y_REQUIREMENTS.push('tabbable-reviewer-ui.js');
