@@ -89,13 +89,15 @@ function closeTabReviewer() {
 	document.body.removeChild(document.getElementById('a11y-focus-box'));
 	window.removeEventListener('keyup',processKeys);
 	window.removeEventListener('focus',trackFocus, true);
-	document.querySelector('[data-first-tabbable]').removeEventListener('blur',leftFirstTabbable);
 	var e = document.querySelectorAll('[data-has-tracking]');
 	for(var i=0; i<e.length; i++)
 		e[i].removeEventListener('focus',updateTabTracking);
 	e = document.querySelectorAll('[data-has-transition]');
 	for(var i=0; i<e.length; i++)
 		e[i].removeEventListener('transitionend',moveFocusBoxAfterTransition);
+	e = document.querySelector('[data-first-tabbable]');
+	if(e)
+		e.removeEventListener('blur',leftFirstTabbable);
 }
 
 function processKeys(evt) {
@@ -171,6 +173,7 @@ function moveFocusBox(e) {
 	if(!fb)
 		return;
 	fb.style.display = 'none';	
+
 	if(!e)
 		return;
 
