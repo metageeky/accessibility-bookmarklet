@@ -6,7 +6,6 @@ if(typeof document.A11Y_REQUIREMENTS === 'undefined')
 document.A11Y_REQUIREMENTS.push('axe.min.js');
 document.A11Y_REQUIREMENTS.push('tabbable.js');
 document.A11Y_REQUIREMENTS.push('w3c-alternative-text-computation.js');
-//document.A11Y_REQUIREMENTS.push('general-report-tests.js');
 
 // shibboleth for detecting loading
 var _shibA11YGenRepTests = 1;
@@ -379,7 +378,7 @@ function outputLinkedFiles() {
 	if(e.length === 0)
 		ret += 'No linked files detected.\n';
 	else
-		ret += 'File Type\tLink Text\tFile Name\t\Labelled as tAccessibility Comments\n';
+		ret += 'File Type\tLink Text\tFile Name\tLabelled as\tAccessibility Comments\n';
 	for(i=0; i<e.length; i++) {
 		f = e[i].href.substring( e[i].href.lastIndexOf('/') + 1 );
 		g = f.substring( f.lastIndexOf('.') + 1);
