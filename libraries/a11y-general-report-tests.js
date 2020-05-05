@@ -378,7 +378,7 @@ function outputLinkedFiles() {
 	if(e.length === 0)
 		ret += 'No linked files detected.\n';
 	else
-		ret += 'File Type\tLink Text\tFile Name\tLabelled as\tAccessibility Comments\n';
+		ret += 'File Type\tLink Text\tFile Name\tHuman: File Type Labelled?\tHuman: Accessibility Comments\n';
 	for(i=0; i<e.length; i++) {
 		f = e[i].href.substring( e[i].href.lastIndexOf('/') + 1 );
 		g = f.substring( f.lastIndexOf('.') + 1);
