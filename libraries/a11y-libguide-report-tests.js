@@ -85,7 +85,7 @@ function outputLibGuideImages() {
 	// first line of column headers
 	var x = 0;
 	var cols = lines[1].split('\t');
-	while(cols[x].indexOf('Human') == -1) {
+	while(x < cols.length && cols[x].indexOf('Human') == -1) {
 		x += 1;
 	}
 	for(j=0; j<x; j++)
