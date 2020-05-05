@@ -1,15 +1,53 @@
+if(typeof document.A11Y_REQUIREMENTS === 'undefined')
+	document.A11Y_REQUIREMENTS = [];
+// Uncomment any files that are required
+document.A11Y_REQUIREMENTS.push('w3c-alternative-text-computation.js');
+document.A11Y_REQUIREMENTS.push('general-report-tests.js');
+
+// shibboleth for detecting loading
+var _shibA11YLibGuideRepTests = 1;
+
 isLG_SideTabs() {
 	return (document.querySelector('.s-lg-tabs-side') !== null);
 }
 
+outputLibGuideInformation() {
+	var ret, i, e;
+	
+	ret = 'LIBGUIDE INFORMATION\n';
+	
+	ret += 'Navigation:\t';
+	if(isLG_SideTabs())
+		ret += 'Side';
+	else
+		ret += 'Top';
+	ret += '\n';
+	
+	ret += 'Friendly URL:\t';
+	ret += (document.location.href.indexOf('c.php?') !== -1);
+	ret += '\n';
+	
+	ret += 'Owner(s):\t';
+	e = document.querySelectorAll('.s-lib-profile-name');
+	for(i=0; i<e.length; i++) {
+		if(i > 0)
+			ret += ', ';
+		ret += e[i].innerText;
+	}
+	ret += '\n';
+	
+	ret += '\n';
+	return ret;
+}
 
-outputLinkedLibGuideContent() {
-	var a, t, m)
+
+outputLinkedLibGuideAssets() {
+	var a, t, m;
 	var e = document.querySelectorAll('a i.s-lg-file-icon');	
 	var reg1 = /fa-file-(\w+)-o/;
 	var reg2 = /content_id=([0-9]+)/;
 
-	ret = 'LINKED LIBGUIDE CONTENT\n';
+	ret = 'LINKED LIBGUIDE ASSETS\n';
 	if(e.length === 0)
 		ret += 'No linked content detected.\n';
 	else
@@ -31,8 +69,6 @@ outputLinkedLibGuideContent() {
 	return ret;
 }
 
-
-
 function getImgBySrc(src) {
 	var e = document.querySelectorAll('img');
 	for(var i=0; i<e.length; i++) 
@@ -41,10 +77,7 @@ function getImgBySrc(src) {
 	return null;
 }
 
-
-
-
-function outputLibguidesImages() {
+function outputLibGuideImages() {
 	var e,i,j;
 	var imgRep = outputImages();
 	var lines = imgRep.split('\n');

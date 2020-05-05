@@ -116,6 +116,12 @@ REQUIREMENTS['tabbable-reviewer-ui.js'] =
 	                'https://metageeky.github.io/accessibility-bookmarklet/libraries/a11y-tabbable-reviewer-ui.js',
 						 function() { return !(typeof _shibA11YTabRevUI === 'undefined') }
 						);	
+REQUIREMENTS['libguide-report-tests.js'] = 
+	new Requirement('libguide-report-tests.js',
+	                'https://metageeky.github.io/accessibility-bookmarklet/libraries/a11y-libguide-report-tests.js',
+						 function() { return !(typeof _shibA11YLibGuideRepTests === 'undefined') }
+						);
+
 
 
 // create promises for the current requirements. 
