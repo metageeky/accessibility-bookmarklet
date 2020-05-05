@@ -47,7 +47,7 @@ function outputLinkedLibGuideAssets() {
 	var reg1 = /fa-file-(\w+)-o/;
 	var reg2 = /content_id=([0-9]+)/;
 
-	ret = 'LINKED LIBGUIDE ASSETS\n';
+	var ret = 'LINKED LIBGUIDE ASSETS\n';
 	if(e.length === 0)
 		ret += 'No linked content detected.\n';
 	else
@@ -55,12 +55,14 @@ function outputLinkedLibGuideAssets() {
 	for(i=0; i<e.length; i++) {
 		a = e[i].parentElement;
 		t = '???';
-		if(m = reg1.exec(a.className) !== null)
+		m = reg1.exec(e[i].className);
+		if(m !== null)
 			t = m[1];
 		ret += t.toUpperCase() + '\t';
 		ret += getAccName(a).name + '\t';
 		ret += a.href + '\t';
-		if(m = reg2.exec(a.href) !== null)
+		m = reg2.exec(a.href)
+		if(m !== null)
 			ret += m[1];
 		ret += '\t';
 		ret += '\n';
