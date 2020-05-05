@@ -7,11 +7,11 @@ document.A11Y_REQUIREMENTS.push('general-report-tests.js');
 // shibboleth for detecting loading
 var _shibA11YLibGuideRepTests = 1;
 
-isLG_SideTabs() {
+function isLG_SideTabs() {
 	return (document.querySelector('.s-lg-tabs-side') !== null);
 }
 
-outputLibGuideInformation() {
+function outputLibGuideInformation() {
 	var ret, i, e;
 	
 	ret = 'LIBGUIDE INFORMATION\n';
@@ -41,7 +41,7 @@ outputLibGuideInformation() {
 }
 
 
-outputLinkedLibGuideAssets() {
+function outputLinkedLibGuideAssets() {
 	var a, t, m;
 	var e = document.querySelectorAll('a i.s-lg-file-icon');	
 	var reg1 = /fa-file-(\w+)-o/;
