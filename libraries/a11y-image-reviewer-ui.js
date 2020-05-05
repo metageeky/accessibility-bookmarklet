@@ -24,7 +24,7 @@ function createImageReviewer()  {
 	var doc;
 	container.appendChild(iframe), iframe.onload = function() { 
 		(doc = iframe.contentWindow.document).open(), doc.write(
-			'<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width,minimum-scale=1.0,initial-scale=1,user-scalable=yes"><style>* { margin:0; padding:0; border:0; box-sizing:border-box} body { overflow-y:hidden; background:#fff; font-size:16px; font-family:sans-serif} button::-moz-focus-inner { border:0} #ibar { padding: 0 15px; text-align:center; margin:0 auto 10px; display:flex; flex-direction:row; flex-wrap:nowrap; justify-content:center; align-content:center; align-items:center} button { line-height:1; color:#fff; background:#284900; border:2px solid #284900; cursor:pointer} #ibar button { font-size:32px; padding:0 5px; margin:0 5px} #ibar button:disabled { background: #eee; color:#333; border-color: #eee; cursor: default;} button:focus,button:hover { background:#506b2f; border-color:#506b2f} button:focus { border-color:#fff; border-style:dotted} #ibar>div { padding:0 4px; flex: 1 0 auto;} .imgbar { border:solid 1px #284900} .imgpanel { padding:10px 15px} .theimg { overflow-x:auto; text-align: center; background: #d0d0d0; padding: 10px; margin:0 auto} .imgpanel table { margin:8px auto 1px} .imgpanel td { vertical-align:top; padding-bottom:3px} .imgpanel tr td:first-of-type { padding-right:3px; font-weight:700} header { padding-left:10px; color:#fff; background-color:#284900; display:flex; flex-wrap:nowrap; align-content:baseline} h1 { font-size:1.2rem; flex:1 1 auto; padding:8px 0} header button { padding:0 8px; font-size:1.1rem} main { overflow-y: scroll; padding-bottom:15px} </style></head><body><header><h1>A11Y Image Reviewer</h1><button aria-label="close"id="imgclose">&#215;</button></header><main id="result"><div id="imgbar"><div class="imgpanel"><div class="theimg"></div><table role="presentation"><tr><td>Alt:</td><td id="alt"></td></tr><tr><td>Long:</td><td id="long"></td></tr></table></div><div id="ibar"><button disabled aria-label="first image"id="first"type="button">&#11120;</button> <button disabled aria-label="previous image"id="prev">&#11104;</button><div><span id="cur"></span> of <span id="tot"></span></div><button aria-label="next image"id="next">&#11106;</button> <button aria-label="last image"id="last">&#11122;</button></div></div></main></body></html>'
+			'<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width,minimum-scale=1.0,initial-scale=1,user-scalable=yes"><style>* { margin:0; padding:0; border:0; box-sizing:border-box} body { overflow-y:hidden; background:#fff; font-size:16px; font-family:sans-serif} button::-moz-focus-inner { border:0} #ibar { padding: 0 15px; text-align:center; margin:0 auto 10px; display:flex; flex-direction:row; flex-wrap:nowrap; justify-content:center; align-content:center; align-items:center} button { line-height:1; color:#fff; background:#284900; border:2px solid #284900; cursor:pointer} #ibar button { font-size:32px; padding:0 5px; margin:0 5px} #ibar button:disabled { background: #eee; color:#333; border-color: #eee; cursor: default;} button:focus,button:hover { background:#506b2f; border-color:#506b2f} button:focus { border-color:#fff; border-style:dotted} #ibar>div { padding:0 4px; flex: 1 0 auto;} .imgbar { border:solid 1px #284900} .imgpanel { padding:10px 15px} .theimg { overflow-x:auto; text-align: center; background: #d0d0d0; padding: 10px; margin:0 auto} .imgpanel table { margin:8px auto 1px} .imgpanel td { vertical-align:top; padding-bottom:3px} .imgpanel tr td:first-of-type { padding-right:3px; font-weight:700} header { padding-left:10px; color:#fff; background-color:#284900; display:flex; flex-wrap:nowrap; align-content:baseline} h1 { font-size:1.2rem; flex:1 1 auto; padding:8px 0} header button { padding:0 8px; font-size:1.1rem} main { overflow-y: scroll; padding-bottom:15px} #noImages { display:none; text-align: center; padding: 10px; font-weight: 700; </style></head><body><header><h1>A11Y Image Reviewer</h1><button aria-label="close"id="imgclose">&#215;</button></header><main id="result"><div id="imgbar"><div class="imgpanel"><div class="theimg"></div><div id="noImages">NO IMAGES ON PAGE</div><table role="presentation"><tr><td>Alt:</td><td id="alt"></td></tr><tr><td>Long:</td><td id="long"></td></tr></table></div><div id="ibar"><button disabled aria-label="first image"id="first"type="button">&#11120;</button> <button disabled aria-label="previous image"id="prev">&#11104;</button><div><span id="cur"></span> of <span id="tot"></span></div><button aria-label="next image"id="next">&#11106;</button> <button aria-label="last image"id="last">&#11122;</button></div></div></main></body></html>'
 		), doc.close();
 		
 		var t;
@@ -68,9 +68,22 @@ function createImageReviewer()  {
 		doc._images = getImages();		
 		doc._cur = 0;
 		doc._tot = doc._images.length;
-		doc.getElementById('cur').innerText = (doc._cur + 1);
-		doc.getElementById('tot').innerText = (doc._tot);
-		updateCurrentImage(doc);
+		if(doc._total > 0) {		
+			doc.getElementById('cur').innerText = (doc._cur + 1);
+			doc.getElementById('tot').innerText = (doc._tot);
+			updateCurrentImage(doc);
+		}
+		else {
+			doc.getElementById('cur').innerText = 0;
+			doc.getElementById('tot').innerText = 0;
+			doc.getElementById('first').disabled = true;
+			doc.getElementById('prev').disabled = true;
+			doc.getElementById('next').disabled = true;
+			doc.getElementById('last').disabled = true;
+			doc.getElementById('noImages').style.display = 'block';
+			doc.querySelector('.theimg').style.display = 'none';
+			doc.querySelector('table').style.display = 'none'
+		}
 			
 	}, document.body.appendChild(container);
 	
