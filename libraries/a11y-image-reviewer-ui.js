@@ -68,7 +68,7 @@ function createImageReviewer()  {
 		doc._images = getImages();		
 		doc._cur = 0;
 		doc._tot = doc._images.length;
-		if(doc._total > 0) {		
+		if(doc._tot > 0) {		
 			doc.getElementById('cur').innerText = (doc._cur + 1);
 			doc.getElementById('tot').innerText = (doc._tot);
 			updateCurrentImage(doc);
