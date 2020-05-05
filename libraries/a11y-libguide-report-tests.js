@@ -55,12 +55,12 @@ function outputLinkedLibGuideAssets() {
 	for(i=0; i<e.length; i++) {
 		a = e[i].parentElement;
 		t = '???';
-		if(m = reg1.exec(a.className)) !== null)
+		if(m = reg1.exec(a.className) !== null)
 			t = m[1];
 		ret += t.toUpperCase() + '\t';
 		ret += getAccName(a).name + '\t';
 		ret += a.href + '\t';
-		if(m = reg2.exec(a.href)) !== null)
+		if(m = reg2.exec(a.href) !== null)
 			ret += m[1];
 		ret += '\t';
 		ret += '\n';
