@@ -119,3 +119,54 @@ function outputLibGuideImages() {
 	}
 	return temp;
 }
+
+function outputPossibleCopyPaste() {
+	var ret = '';
+	var i, e, n;
+	
+	e = document.querySelectorAll('div[style]');
+	n = 0;
+	for(i=0; i<e.length; i++) {
+		if(e[i].style.cssText.indexOf('font-family') >= 0)
+			n += 1;
+		else if(e[i].style.cssText.indexOf('font-size') >= 0)
+			n += 1;
+	}
+	if(n > 0)
+		ret += 'div[style]\t' + n + '\n';
+	
+	e = document.querySelectorAll('p[style]');
+	n = 0;
+	for(i=0; i<e.length; i++) {
+		if(e[i].style.cssText.indexOf('font-family') >= 0)
+			n += 1;
+		else if(e[i].style.cssText.indexOf('font-size') >= 0)
+			n += 1;
+	}
+	if(n > 0)
+		ret += 'p[style]\t' + n + '\n';	
+		
+	e = document.querySelectorAll('span[style]');
+	n = 0;
+	for(i=0; i<e.length; i++) {
+		if(e[i].style.cssText.indexOf('font-family') >= 0)
+			n += 1;
+		else if(e[i].style.cssText.indexOf('font-size') >= 0)
+			n += 1;
+	}
+	if(n > 0)
+		ret += 'span[style]\t' + n + '\n';		
+
+	e = document.querySelectorAll('big');
+	if(e.length > 0)
+		ret += 'big\t' + e.length;
+
+	e = document.querySelectorAll('small');
+	if(e.length > 0)
+		ret += 'small\t' + e.length;	
+	
+	if(ret.length > 0)
+		ret = 'POSSIBLE COPY-PASTE TEXT STYLES\n' + ret + '\n';
+	
+	return ret;
+}

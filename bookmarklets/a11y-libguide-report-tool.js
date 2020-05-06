@@ -40,6 +40,9 @@ javascript: (function() {
 		/* Font Icon Detection */
 		rep += outputFontIconDetect();
 		
+		/* possible copy-paste */
+		rep += outputPossibleCopyPaste();
+		
 		var iframe = createReportUI(rep);
 	}
 
