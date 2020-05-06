@@ -94,7 +94,7 @@ function createReportUI(report) {
 				mutations.forEach(function(m) {
 					if(m.removedNodes) {
 						for(var n of m.removedNodes) {
-							if(n.id === 'a11y-tab-viewer') {
+							if(n.id === 'a11y-tabbing-viewer') {
 								container.style.display = 'block';
 								document._mut.disconnect();
 							}
