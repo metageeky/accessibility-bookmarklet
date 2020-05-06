@@ -1,0 +1,8 @@
+# A11Y Bookmarklets
+
+These [bookmarklets/favelets](https://en.wikipedia.org/wiki/Bookmarklet) are designed for evaluating web accessibility, but are not necessarily tools for web developers. The primary purpose of these bookmarklets is to facilitate data collection of a site's accessibility alongside supporting some basic human verification. The generated CSV data can then be uploaded into a database for larger scale analyses.
+
+In particular, these tools are an integral part to a large-scale Library Accessible E-Resources study (link forthcoming).
+
+## Report Bookmarklets
+The <a href="javascript:(function(){function d(e){var g="";g+="URL:\t"+document.location.href+"\n";g+="DATETIME:\t"+(new Date()).toISOString()+"\n\n";g+=outputAxeResults(e);g+=outputHeadings();g+=outputPossibleHeadings();g+=outputLandmarks();g+=outputTabbables();g+=outputImages();g+=outputAudioVideo();g+=outputLinkedFiles();g+=outputFontIconDetect();var f=createReportUI(g)}function b(){loadingNotice("A11Y Reporter is loading...<br>Refresh page to cancel");runA11YTool(a)}function a(){axe.run().then( results => {d(results)}); removeLoadingNotice();}if(typeof document.A11Y_REQUIREMENTS==="undefined"){document.A11Y_REQUIREMENTS=[]}document.A11Y_REQUIREMENTS.push("general-report-tests.js");document.A11Y_REQUIREMENTS.push("report-ui.js");document.A11Y_REQUIREMENTS.push("image-reviewer-ui.js");document.A11Y_REQUIREMENTS.push("tabbable-reviewer-ui.js");var c=document.createElement("script");c.onload=b;c.src="https://metageeky.github.io/accessibility-bookmarklet/libraries/a11y-core-functions.js";document.body.appendChild(c)}());">A11Y Report</a>
