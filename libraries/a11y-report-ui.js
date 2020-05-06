@@ -90,14 +90,21 @@ function createReportUI(report) {
 		t = doc.getElementById('launchTabView');
 		t && t.addEventListener('click', function(e) {
 			container.style.display = 'none';
-			var mut = new MutationObserver( function(m) {
-				console.log(m.type);
-				console.log(m.node);
+			var mut = new MutationObserver( function(mutations) {
+				mutations.forEach(function(m) {
+					if(m.removedNodes) {
+						for(var n of m.removedNodes) {
+							if(n.id === 'a11y-tab-viewer') {
+								container.style.display = 'block';
+								document._mut.disconnect();
+							}
+						}
+					}
+				});
 			});
 			document._mut = mut;
-			mut.observe(document.body, { childList: true });
-
 			createTabbingReviewer();
+			mut.observe(document.body, { childList: true });			
 		});
 
 		
