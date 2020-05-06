@@ -87,10 +87,10 @@ function createReportUI(report) {
 		t && t.addEventListener('click', function(e) {
 			createImageReviewer();
 		});
-		t = doc.getElementById('launchImgView');
+		t = doc.getElementById('launchTabView');
 		t && t.addEventListener('click', function(e) {
 			container.style.display = 'none';
-			var reviewer = createTabbableReviewer();
+			var reviewer = createTabbingReviewer();
 			reviewer.contentWindow.addEventListener('unload', function() {
 				container.style.display = 'block';
 				console.log('iframe unloaded');
