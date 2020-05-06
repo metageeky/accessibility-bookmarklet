@@ -89,12 +89,15 @@ function createReportUI(report) {
 		});
 		t = doc.getElementById('launchTabView');
 		t && t.addEventListener('click', function(e) {
-			container.style.visibility = 'hidden';
-			var reviewer = createTabbingReviewer();
-			reviewer.contentWindow.addEventListener('unload', function() {
-				container.style.visibility = 'visible';
-				console.log('iframe unloaded');
+			container.style.display = 'none';
+			var mut = new MutationObserver( function(m) {
+				console.log(m.type);
+				console.log(m.node);
 			});
+			document._mut = mut;
+			mut.observer(document.body, { childList: true });
+
+			var reviewer = createTabbingReviewer();
 		});
 
 		
