@@ -4,5 +4,17 @@ These [bookmarklets/favelets](https://en.wikipedia.org/wiki/Bookmarklet) are des
 
 In particular, these tools are an integral part to a large-scale Library Accessible E-Resources study (link forthcoming).
 
-## Report Bookmarklets
-The <a href="javascript:(function(){function d(e){var g="";g+="URL:\t"+document.location.href+"\n";g+="DATETIME:\t"+(new Date()).toISOString()+"\n\n";g+=outputAxeResults(e);g+=outputHeadings();g+=outputPossibleHeadings();g+=outputLandmarks();g+=outputTabbables();g+=outputImages();g+=outputAudioVideo();g+=outputLinkedFiles();g+=outputFontIconDetect();var f=createReportUI(g)}function b(){loadingNotice("A11Y Reporter is loading...<br>Refresh page to cancel");runA11YTool(a)}function a(){axe.run().then( results => {d(results)}); removeLoadingNotice();}if(typeof document.A11Y_REQUIREMENTS==="undefined"){document.A11Y_REQUIREMENTS=[]}document.A11Y_REQUIREMENTS.push("general-report-tests.js");document.A11Y_REQUIREMENTS.push("report-ui.js");document.A11Y_REQUIREMENTS.push("image-reviewer-ui.js");document.A11Y_REQUIREMENTS.push("tabbable-reviewer-ui.js");var c=document.createElement("script");c.onload=b;c.src="https://metageeky.github.io/accessibility-bookmarklet/libraries/a11y-core-functions.js";document.body.appendChild(c)}());">A11Y Report</a>
+## External Resources
+
+The bookmarklets utilize the following external JavaScript libraries. Copies of these are kept in the `externals/` directory to allow for local usage and to create a single point for downloads.
+
+* [axe-core by dequelabs](https://github.com/dequelabs/axe-core)
+
+* [tabbable by davidtheclark](https://github.com/davidtheclark/tabbable)
+
+* [w3c-alternative-text-computation by WhatSock](https://github.com/WhatSock/w3c-alternative-text-computation)
+
+
+## License
+
+The bookmarklets are released under the [Mozilla Public License Version 2.0](https://www.mozilla.org/en-US/MPL/2.0/). Contribute and expand while respecting creators.
