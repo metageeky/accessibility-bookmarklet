@@ -90,6 +90,8 @@ function createReportUI(report) {
 		t = doc.getElementById('launchTabView');
 		t && t.addEventListener('click', function(e) {
 			container.style.display = 'none';
+			container.style.borderColor = 'red';
+			container.style.borderWith = '10px';
 			var reviewer = createTabbingReviewer();
 			reviewer.contentWindow.addEventListener('unload', function() {
 				container.style.display = 'block';
