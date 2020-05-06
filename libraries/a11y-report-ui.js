@@ -95,9 +95,9 @@ function createReportUI(report) {
 				console.log(m.node);
 			});
 			document._mut = mut;
-			mut.observer(document.body, { childList: true });
+			mut.observe(document.body, { childList: true });
 
-			var reviewer = createTabbingReviewer();
+			createTabbingReviewer();
 		});
 
 		
