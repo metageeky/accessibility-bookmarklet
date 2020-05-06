@@ -61,7 +61,7 @@ function outputLinkedLibGuideAssets() {
 		ret += t.toUpperCase() + '\t';
 		ret += getAccName(a).name + '\t';
 		ret += a.href + '\t';
-		m = reg2.exec(a.href)
+		m = reg2.exec(a.href);
 		if(m !== null)
 			ret += m[1];
 		ret += '\t';

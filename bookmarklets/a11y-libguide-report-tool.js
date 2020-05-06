@@ -35,7 +35,7 @@ javascript: (function() {
 		rep += outputLinkedFiles();
 
 		/* LibGuide Assets */
-		rep += outputLibGuideAssets();
+		rep += outputLinkedLibGuideAssets();
 
 		/* Font Icon Detection */
 		rep += outputFontIconDetect();
