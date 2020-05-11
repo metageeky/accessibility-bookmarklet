@@ -1,50 +1,5 @@
 javascript: (function() {
-	function writeReport(axe_results) {
-		var rep = '';
-			
-		/* standard info */
-		rep += 'TITLE:\t' + document.title + '\n'; 
-		rep += 'URL:\t' + document.location.href + '\n';
-		rep += 'DATETIME:\t' + (new Date()).toISOString() + '\n\n'
-		
-		/* Libguide Information */
-		rep += outputLibGuideInformation();
-
-		/* axe report */
-		rep += outputAxeResults(axe_results);
-
-		/* Output headings outline */
-		rep += outputHeadings();
-
-		/* Output possible headings */
-		rep += outputPossibleHeadings();
-
-		/* output landmarks */
-		rep += outputLandmarks();
-
-		/* Tabbable elements checks */
-		rep += outputTabbables();
-
-		/* Images */
-		rep += outputLibGuideImages();
-
-		/* Audio/Video */
-		rep += outputAudioVideo();
-
-		/* Linked Files */
-		rep += outputLinkedFiles();
-
-		/* LibGuide Assets */
-		rep += outputLinkedLibGuideAssets();
-
-		/* Font Icon Detection */
-		rep += outputFontIconDetect();
-		
-		/* possible copy-paste */
-		rep += outputPossibleCopyPaste();
-		
-		var iframe = createReportUI(rep);
-	}
+	/* From https://github.com/metageeky/accessibility-bookmarklet by metageeky. Mozilla Public License Version 2.0 */
 
 	function a11yStartup() {
 		loadingNotice('A11Y Reporter is loading...<br>Refresh page to cancel');
@@ -52,11 +7,11 @@ javascript: (function() {
 	}
 	
 	function generateReport() {
-		axe.run().then( results => {writeReport(results)});
+		axe.run().then( results => {writeLibGuideReport(results)});
 		removeLoadingNotice();			
 	}
 	
-	// RUNNING CODE
+	/* RUNNING CODE */
 	if(typeof document.A11Y_REQUIREMENTS === 'undefined')
 		document.A11Y_REQUIREMENTS = [];
 	document.A11Y_REQUIREMENTS.push('general-report-tests.js');
