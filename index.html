@@ -1,0 +1,92 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+
+	<title>A11Y Bookmarklets - metageeky</title>
+	<meta name="description" content="The HTML5 Herald">
+	<meta name="author" content="metageeky">
+
+	<style>
+	* { 
+		box-sizing: border-box; 
+		font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+	}
+		
+	html, body {
+		line-height: 1.3;
+		margin: 0;
+		padding: 0;
+		background: #fff;
+		color: #000;
+		font-size: 1.1rem;
+	}
+	
+	header, main, footer {
+		display: block;
+	}
+	h1,h2,h3,h4,h5,h6 {
+		color: #284900;
+	}
+	
+	a {
+		font-weight: 700;
+		color: #284900;
+	}
+	
+	.content {
+		padding: 10px;
+		margin: auto;
+		max-width: 700px;
+	}
+	
+	.sr-only:not(:focus):not(:active) {
+		clip: rect(0 0 0 0);
+		clip-path: inset(100%);
+		height: 1px;
+		overflow: hidden;
+		position: absolute;
+		white-space: nowrap;
+		width: 1px;
+	}
+	a.sr-only:focus {
+		background: #284900;
+		color: #fff;
+		border: dashed 2px #fff;
+		padding: 8px;
+		position: fixed;
+		top: 5px;
+		left: 5px;
+		outline: none;
+	}
+	
+
+	</style>
+</head>
+
+<body>
+	<a href="#main" class="sr-only">
+	Skip to main content
+	</a>
+
+	<header class="content">
+	<h1>
+		<abbr title="Accessibility">A11Y</abbr> Bookmarklets
+	</h1>
+	</header>
+
+	<main id="main" class="content" aria-label="content">
+
+
+		<a href="javascript:(function(){/* From https://github.com/metageeky/accessibility-bookmarklet by metageeky. Mozilla Public License Version 2.0 */ function writeReport(e){var g='';g+='TITLE:\t'+document.title+'\n';g+='URL:\t'+document.location.href+'\n';g+='DATETIME:\t'+(new Date()).toISOString()+'\n\n';g+=outputAxeResults(e);g+=outputHeadings();g+=outputPossibleHeadings();g+=outputLandmarks();g+=outputTabbables();g+=outputImages();g+=outputAudioVideo();g+=outputLinkedFiles();g+=outputFontIconDetect();var f=createReportUI(g)}function b(){loadingNotice('A11Y Reporter is loading...<br>Refresh page to cancel');runA11YTool(a)}function a(){axe.run().then( results => {writeReport(results)});removeLoadingNotice()}if(typeof document.A11Y_REQUIREMENTS==='undefined'){document.A11Y_REQUIREMENTS=[]}document.A11Y_REQUIREMENTS.push('general-report-tests.js');document.A11Y_REQUIREMENTS.push('report-ui.js');document.A11Y_REQUIREMENTS.push('image-reviewer-ui.js');document.A11Y_REQUIREMENTS.push('tabbable-reviewer-ui.js');var c=document.createElement('script');c.onload=b;c.src='https://metageeky.github.io/accessibility-bookmarklet/libraries/a11y-core-functions.js';document.body.appendChild(c)}());
+
+">A11Y Reporter</a>
+
+	</main>
+	
+	<footer class="content">
+		From <a href="https://twitter.com/metageeky">@metageeky</a>
+	</footer>
+</body>
+</html>
