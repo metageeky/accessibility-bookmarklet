@@ -17,28 +17,41 @@
 	html, body {
 		line-height: 1.3;
 		margin: 0;
-		padding: 0;
+		padding: 0 0.5em 0.5em;
 		background: #fff;
 		color: #000;
-		font-size: 1.1rem;
+		font-size: calc(1rem + 0.25vw);
 	}
 	
 	header, main, footer {
 		display: block;
+		padding: 0;
+		margin: auto;
+		max-width: 700px;
+	}		
+	
+	footer.content {
+		margin-top: 1em;
+		border-top: 3px #0018A8 solid;
+		padding: 0.25em 0 0;
+	}
+	
+	
+	h1,h2,h3,h4,h5,h6 {
+		color: #7C0A02;
 	}
 	h1,h2,h3,h4,h5,h6 {
-		color: #284900;
+		margin-bottom: 0.375em;
 	}
 	
 	a {
 		font-weight: 700;
-		color: #284900;
+		color: #0018A8;
 	}
 	
-	.content {
-		padding: 10px;
-		margin: auto;
-		max-width: 700px;
+	p {
+		margin: 0;
+		line-height: 1.5;
 	}
 	
 	.sr-only:not(:focus):not(:active) {
@@ -51,7 +64,7 @@
 		width: 1px;
 	}
 	a.sr-only:focus {
-		background: #284900;
+		background: #0018A8;
 		color: #fff;
 		border: dashed 2px #fff;
 		padding: 8px;
@@ -61,7 +74,78 @@
 		outline: none;
 	}
 	
-
+	details summary { 
+		color: #0018A8;
+		font-weight: 700;
+		border: solid 3px #0018A8;
+		padding: 0.25em 0.5em;
+		border-radius: 0.375em;
+		margin-bottom: 0.25em;
+	}
+	
+	details[open] {
+		border: solid 3px #0018A8;
+		padding: 0.25em  0.5em 0.5em;
+		border-radius: 0.375em;
+	}
+	
+	details[open] > summary {
+		border: none;
+		padding: 0;
+	}
+	
+	p + details {
+		margin-top: 0.5em;
+	}
+	
+	details + details {
+		margin-top: 0.75em;
+	}
+	
+	details > ul {
+		margin: 0;
+	}
+	
+	details > ul li::marker {
+		color: #7C0A02;
+	}
+	details.code {
+		text-align: center;
+	}
+	details.code summary {
+		text-align: left;
+	}
+	details.code button {
+		font-size: initial;
+		font-weight: 700;
+		border: 2px solid #0018A8;
+		background: #0018A8;
+		color: #fff;
+	}
+	
+	code {
+		display: block;
+		margin-bottom: 0.5em;
+	}
+	code textarea{
+		font-family: "Lucida Console","Courier New",monospace;
+		font-size: 0.67em;
+		word-break: break-all;
+		overflow-wrap: anywhere;
+		border: solid 2px #0018A8;;
+		padding: 0.875em;
+		width: 100%;		
+		resize: none;
+		overflow: hidden;
+	}
+	
+	.bookmarklet { 
+		color: #fff;
+		background: #284900;
+		padding: 0 0.5em;
+		border-radius: 6px;
+		text-decoration: none;
+	}
 	</style>
 </head>
 
@@ -77,16 +161,127 @@
 	</header>
 
 	<main id="main" class="content" aria-label="content">
+		<p>
+			These <a href="https://en.wikipedia.org/wiki/Bookmarklet">
+			bookmarklets/favelets</a> are designed for evaluating web accessibility, 
+			but are not necessarily tools for web developers. The primary purpose of 
+			these bookmarklets is to facilitate data collection of a site's 
+			accessibility alongside supporting some basic human verification. 
+		</p>
 
+		<p>
+			The bookmarklets and their supporting code are an <a 
+			href="https://github.com/metageeky/accessibility-bookmarklet">open 
+			source project</a> on Github released under the <a 
+			href="https://www.mozilla.org/en-US/MPL/2.0/">Mozilla Public License 
+			Version 2.0</a>.
+		</p>
+		
+		<h2>Bookmarklets</h2>
+		
+		<h3>Installation</h3>
+		<p>
+			To use any of the bookmarklets, drag the 
+			<span class="bookmarklet">Bookmarklet</span> to your browser's 
+			bookmark toolbar. Alternatively, manually create a new bookmark 
+			and copy-paste the <em>bookmarklet code</em> into the bookmark's
+			location/URL.
+		</p>
 
-		<a href="javascript:(function(){/* From https://github.com/metageeky/accessibility-bookmarklet by metageeky. Mozilla Public License Version 2.0 */ function writeReport(e){var g='';g+='TITLE:\t'+document.title+'\n';g+='URL:\t'+document.location.href+'\n';g+='DATETIME:\t'+(new Date()).toISOString()+'\n\n';g+=outputAxeResults(e);g+=outputHeadings();g+=outputPossibleHeadings();g+=outputLandmarks();g+=outputTabbables();g+=outputImages();g+=outputAudioVideo();g+=outputLinkedFiles();g+=outputFontIconDetect();var f=createReportUI(g)}function b(){loadingNotice('A11Y Reporter is loading...<br>Refresh page to cancel');runA11YTool(a)}function a(){axe.run().then( results => {writeReport(results)});removeLoadingNotice()}if(typeof document.A11Y_REQUIREMENTS==='undefined'){document.A11Y_REQUIREMENTS=[]}document.A11Y_REQUIREMENTS.push('general-report-tests.js');document.A11Y_REQUIREMENTS.push('report-ui.js');document.A11Y_REQUIREMENTS.push('image-reviewer-ui.js');document.A11Y_REQUIREMENTS.push('tabbable-reviewer-ui.js');var c=document.createElement('script');c.onload=b;c.src='https://metageeky.github.io/accessibility-bookmarklet/libraries/a11y-core-functions.js';document.body.appendChild(c)}());
+		
+		<h3>A11Y Report Tool</h3>
+		<p>
+			The <a class="bookmarklet" href="">A11Y Reporter</a> performs and 
+			reports on a variety of accessibility tests and heuristics. The 
+			findings are reported in a human-readable, tab-separated format for
+			easy insertion into a spreadsheet or database. Any columns requiring
+			human validation have column headers beginning with "Human:".
+		</p>
+		<details>
+			<summary>Tests &amp; Heuristics</summary>
+			<ul>
+				<li>The full <a href="https://github.com/dequelabs/axe-core/blob/develop/doc/rule-descriptions.md">
+				axe-core ruleset</a></li>
+				<li>Outline of headings for current page view</li>
+				<li>Heuristic detection of possible headings</li>
+				<li>ARIA/HTML5 Landmarks</li>
+				<li>Ordered list of detectable tabbable elements (requires human 
+				validation)</li>
+				<li>All graphic elements (img, svg, etc.) and their accessible
+					 name values (requires human validation)</li>
+				<li>Embedded audio/video elements (requires human validation></li>
+				<li>Linked files and documents (requires human validation)</li>
+				<li>Detect of popular font-based icon frameworks</li>
+			</ul>
+		</details>
+		<details class="code" open>
+			<summary>Code</summary>
+			<code>
+				<textarea readonly spellcheck="false">javascript: (function() { /* From https://github.com/metageeky/accessibility-bookmarklet by metageeky. Mozilla Public License Version 2.0 */ function a11yStartup() { loadingNotice('A11Y Reporter is loading...&lt;br&gt;Refresh page to cancel'); runA11YTool(generateReport); } function generateReport() { axe.run().then( results => {writeGeneralReport(results)}); removeLoadingNotice(); } /* RUNNING CODE */ if(typeof document.A11Y_REQUIREMENTS === 'undefined') document.A11Y_REQUIREMENTS = []; document.A11Y_REQUIREMENTS.push('general-report-tests.js'); document.A11Y_REQUIREMENTS.push('report-ui.js'); document.A11Y_REQUIREMENTS.push('image-reviewer-ui.js'); document.A11Y_REQUIREMENTS.push('tabbable-reviewer-ui.js'); var e = document.createElement('script'); e.onload = a11yStartup; e.src = 'https://metageeky.github.io/accessibility-bookmarklet/libraries/a11y-core-functions.js'; document.body.appendChild(e); }());</textarea>
+			</code>
+			<button class="select">Select Code</button> 
+			<button class="copy">Copy to Clipboard</button>
+		</details>
+		
+		
+	
 
-">A11Y Reporter</a>
+		
+		<h2>Acknowledgments</h2>
+		<p>
+			This project owes its completion to the open source efforts by <a 
+			href="https://github.com/dequelabs/axe-core">dequelabs</a>,
+			<a href="https://github.com/davidtheclark/tabbable">davidtheclark</a>, 
+			and <a href="https://github.com/WhatSock/w3c-alternative-text-computation">
+			WhatSock</a> as well as many fruitful conversations on the 
+			<a href="https://web-a11y.slack.com">Web A11Y slack</a>.
+		</p>
 
 	</main>
 	
 	<footer class="content">
-		From <a href="https://twitter.com/metageeky">@metageeky</a>
+	<p>From <a href="https://twitter.com/metageeky">@metageeky</a></p>
 	</footer>
+	
+	<script> 
+		function resizeTextAreas() {
+			var i;
+			var e = document.querySelectorAll('textarea');
+			for(i=0; i<e.length; i++)
+				e[i].style.height = e[i].scrollHeight + 'px';
+		}
+		function prepareSelectAllButtons() {
+			var i;
+			var e = document.querySelectorAll('button.select');
+			for(i=0; i<e.length; i++) {
+				e[i].addEventListener('click', function(e) {
+					this.parentElement.querySelector('textarea').select();
+				});
+			}
+		}
+		function prepareCopyButtons() {
+			var i;
+			var e = document.querySelectorAll('button.copy');
+			for(i=0; i<e.length; i++) {
+				e[i].addEventListener('click', function(e) {
+					this.parentElement.querySelector('textarea').select();
+					try {
+						var status = document.execCommand('copy');
+						if(!status)
+							alert("Cannot copy text");
+					} catch (err) {
+						alert('Unable to copy.');
+					}					
+				});
+			}
+		}		
+		window.addEventListener('load', function () {
+			resizeTextAreas();
+			prepareSelectAllButtons();
+			prepareCopyButtons();
+		});
+	</script>
+	
+	
 </body>
 </html>
