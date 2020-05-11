@@ -3,7 +3,7 @@ if(typeof document.A11Y_REQUIREMENTS === 'undefined')
 // Uncomment any files that are required
 document.A11Y_REQUIREMENTS.push('w3c-alternative-text-computation.js');
 document.A11Y_REQUIREMENTS.push('general-report-tests.js');
-document.A11Y_REQUIREMENTS.push(''report-ui.js');
+document.A11Y_REQUIREMENTS.push('report-ui.js');
 
 // shibboleth for detecting loading
 var _shibA11YLibGuideRepTests = 1;
