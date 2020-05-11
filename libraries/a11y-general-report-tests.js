@@ -6,7 +6,7 @@ if(typeof document.A11Y_REQUIREMENTS === 'undefined')
 document.A11Y_REQUIREMENTS.push('axe.min.js');
 document.A11Y_REQUIREMENTS.push('tabbable.js');
 document.A11Y_REQUIREMENTS.push('w3c-alternative-text-computation.js');
-document.A11Y_REQUIREMENTS.push('
+document.A11Y_REQUIREMENTS.push('report-ui.js');
 
 // shibboleth for detecting loading
 var _shibA11YGenRepTests = 1;
