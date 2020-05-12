@@ -10,51 +10,51 @@ var _shibA11YLibGuideRepTests = 1;
 
 // Lib Guide Report 
 function writeLibGuideReport(axe_results) {
-		var rep = '';
-			
-		/* standard info */
-		rep += 'TITLE:\t' + document.title + '\n'; 
-		rep += 'URL:\t' + document.location.href + '\n';
-		rep += 'DATETIME:\t' + (new Date()).toISOString() + '\n\n'
+	var rep = '';
 		
-		/* Libguide Information */
-		rep += outputLibGuideInformation();
+	/* standard info */
+	rep += 'TITLE:\t' + document.title + '\n'; 
+	rep += 'URL:\t' + document.location.href + '\n';
+	rep += 'DATETIME:\t' + (new Date()).toISOString() + '\n\n'
+	
+	/* Libguide Information */
+	rep += outputLibGuideInformation();
 
-		/* axe report */
-		rep += outputAxeResults(axe_results);
+	/* axe report */
+	rep += outputAxeResults(axe_results);
 
-		/* Output headings outline */
-		rep += outputHeadings();
+	/* Output headings outline */
+	rep += outputHeadings();
 
-		/* Output possible headings */
-		rep += outputPossibleHeadings();
+	/* Output possible headings */
+	rep += outputPossibleHeadings();
 
-		/* output landmarks */
-		rep += outputLandmarks();
+	/* output landmarks */
+	rep += outputLandmarks();
 
-		/* Tabbable elements checks */
-		rep += outputTabbables();
+	/* Tabbable elements checks */
+	rep += outputTabbables();
 
-		/* Images */
-		rep += outputLibGuideImages();
+	/* Images */
+	rep += outputLibGuideImages();
 
-		/* Audio/Video */
-		rep += outputAudioVideo();
+	/* Audio/Video */
+	rep += outputAudioVideo();
 
-		/* Linked Files */
-		rep += outputLinkedFiles();
+	/* Linked Files */
+	rep += outputLinkedFiles();
 
-		/* LibGuide Assets */
-		rep += outputLinkedLibGuideAssets();
+	/* LibGuide Assets */
+	rep += outputLinkedLibGuideAssets();
 
-		/* Font Icon Detection */
-		rep += outputFontIconDetect();
-		
-		/* possible copy-paste */
-		rep += outputPossibleCopyPaste();
-		
-		var iframe = createReportUI(rep);
-	}
+	/* Font Icon Detection */
+	rep += outputFontIconDetect();
+	
+	/* possible copy-paste */
+	rep += outputPossibleCopyPaste();
+	
+	var iframe = createReportUI(rep);
+}
 
 
 function isLG_SideTabs() {

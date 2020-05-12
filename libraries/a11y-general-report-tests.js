@@ -13,42 +13,42 @@ var _shibA11YGenRepTests = 1;
 
 // General Report output
 function writeGeneralReport(axe_results) {
-		var rep = '';
-			
-		/* standard info */
-		rep += 'TITLE:\t' + document.title + '\n'; 
-		rep += 'URL:\t' + document.location.href + '\n';
-		rep += 'DATETIME:\t' + (new Date()).toISOString() + '\n\n'
-
-		/* axe report */
-		rep += outputAxeResults(axe_results);
-
-		/* Output headings outline */
-		rep += outputHeadings();
-
-		/* Output possible headings */
-		rep += outputPossibleHeadings();
-
-		/* output landmarks */
-		rep += outputLandmarks();
-
-		/* Tabbable elements checks */
-		rep += outputTabbables();
-
-		/* Images */
-		rep += outputImages();
-
-		/* Audio/Video */
-		rep += outputAudioVideo();
-
-		/* Linked Files */
-		rep += outputLinkedFiles();
-
-		/* Font Icon Detection */
-		rep += outputFontIconDetect();
+	var rep = '';
 		
-		var iframe = createReportUI(rep);
-	}
+	/* standard info */
+	rep += 'TITLE:\t' + document.title + '\n'; 
+	rep += 'URL:\t' + document.location.href + '\n';
+	rep += 'DATETIME:\t' + (new Date()).toISOString() + '\n\n'
+
+	/* axe report */
+	rep += outputAxeResults(axe_results);
+
+	/* Output headings outline */
+	rep += outputHeadings();
+
+	/* Output possible headings */
+	rep += outputPossibleHeadings();
+
+	/* output landmarks */
+	rep += outputLandmarks();
+
+	/* Tabbable elements checks */
+	rep += outputTabbables();
+
+	/* Images */
+	rep += outputImages();
+
+	/* Audio/Video */
+	rep += outputAudioVideo();
+
+	/* Linked Files */
+	rep += outputLinkedFiles();
+
+	/* Font Icon Detection */
+	rep += outputFontIconDetect();
+	
+	var iframe = createReportUI(rep);
+}
 
 
 // Functions below are used to generate the general A11Y Report
