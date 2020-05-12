@@ -18,7 +18,9 @@ function writeGeneralReport(axe_results) {
 	/* standard info */
 	rep += 'TITLE:\t' + document.title + '\n'; 
 	rep += 'URL:\t' + document.location.href + '\n';
-	rep += 'DATETIME:\t' + (new Date()).toISOString() + '\n\n'
+	rep += 'DATETIME:\t' + (new Date()).toISOString() + '\n'
+	rep += 'HUMAN TESTER:\n'
+	rep += '\n';
 
 	/* axe report */
 	rep += outputAxeResults(axe_results);
@@ -82,8 +84,7 @@ function getHeadingsOutline() {
 function outputHeadings() {
 	var outline = getHeadingsOutline();
 	var ret = '';
-	ret += 'HEADINGS\n';
-	ret += 'Level\tText\tVisibility\tCorrect\n';
+
 	for(i = 0; i < outline.length; i++) {
 			var o = outline[i];
 		if(!o.visible) continue;
@@ -92,7 +93,10 @@ function outputHeadings() {
 		ret += '\t' + !o.wrong;
 		ret += '\n';
 	}
-	ret += '\n';
+	if(ret.length > 0) {
+		ret ='HEADINGS\n' + 'Level\tText\tVisibility\tCorrect\n' + ret;
+		ret += '\n';
+	}
 	return ret;
 }
 
@@ -117,12 +121,10 @@ function outputPossibleHeadings() {
 		}
 	}
 	if(ret.length > 0) {
-		ret = 'Node\tText\tLength\tSize\tWeight\n' + ret;
+		ret = 'POSSIBLE HEADINGS\n' + 'Node\tText\tLength\tSize\tWeight\n' + ret;
+		ret += '\n';	
 	}
-	else {
-		ret += 'No possible headings detected\n';
-	}
-	ret = 'POSSIBLE HEADINGS\n' + ret + '\n';
+
 	return ret;
 }
 
@@ -159,8 +161,7 @@ function outputLandmarks() {
 
 	var ret = 'LANDMARKS\n';
 	if(e.length == 0) {
-		ret += 'No landmarks\n\n';
-		return ret;
+		return '';
 	}
 
 	/* determine hierarchical levels:
@@ -251,9 +252,9 @@ function outputTabbables() {
 	ret += 'TABBING REPORT\n';
 	var t = tabbable(document.body);
 	if(t.length == 0)
-		ret += 'No tabbable elements on page';
-	else
-		ret += '#\tType\tAcc Name\t Acc Description\tTabindex\tQuestionable\tRedundant Title\tEmpty Link\tHuman: Visible on Focus?\tHuman: Ordering Sense?\n';
+		return '';
+	
+	ret += '#\tType\tAcc Name\t Acc Description\tTabindex\tQuestionable\tRedundant Title\tEmpty Link\tHuman: Visible on Focus?\tHuman: Ordering Sense?\n';
 	for(i=0; i<t.length; i++) {
 		e = t[i];
 		n = window.getAccName(e);
@@ -362,7 +363,7 @@ function outputImages() {
 		ret = 'Node\tSRC\tAlt\taria-label(by)\taria-describedby\tTitle\tSVG Title\tIffy ALT\tAccesssible Name\tAccessible Description\tHuman: Alt Quality\n' + ret;
 	}
 	else {
-		ret += 'No images found\n';
+		return '';
 	}
 	ret = 'IMAGES\n' + ret + '\n';
 	return ret;
@@ -388,8 +389,7 @@ function outputAudioVideo() {
 
 	ret = 'EMBEDDED AUDIO/VIDEO\n';
 	if(e.length == 0) {
-		ret += 'No audio/video detected.\n\n'
-		return ret;
+		return '';
 	}
 	ret += 'Node\tSrc\tSources\tCaptioned\tTranscript\n'
 	for(i=0; i<e.length; i++) {
@@ -418,7 +418,7 @@ function outputLinkedFiles() {
 
 	ret = 'LINKED FILES\n';
 	if(e.length === 0)
-		ret += 'No linked files detected.\n';
+		return '';
 	else
 		ret += 'File Type\tLink Text\tFile Name\tHuman: File Type Labelled?\tHuman: Accessibility Comments\n';
 	for(i=0; i<e.length; i++) {
@@ -448,7 +448,7 @@ function outputFontIconDetect() {
 			ret += f[i] + '\n';
 	}
 	if(ret.length == 0)
-		ret = 'No icont fonts potentially detected.\n'
+		return '';
 
 	return 'ICON FONTS\n' + ret + '\n';
 }

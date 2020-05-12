@@ -15,7 +15,10 @@ function writeLibGuideReport(axe_results) {
 	/* standard info */
 	rep += 'TITLE:\t' + document.title + '\n'; 
 	rep += 'URL:\t' + document.location.href + '\n';
-	rep += 'DATETIME:\t' + (new Date()).toISOString() + '\n\n'
+	rep += 'DATETIME:\t' + (new Date()).toISOString() + '\n';
+	rep += 'HUMAN TESTER:\n'
+	rep += '\n';
+
 	
 	/* Libguide Information */
 	rep += outputLibGuideInformation();
@@ -99,7 +102,7 @@ function outputLinkedLibGuideAssets() {
 
 	var ret = 'LINKED LIBGUIDE ASSETS\n';
 	if(e.length === 0)
-		ret += 'No linked content detected.\n';
+		return '';
 	else
 		ret += 'File Type\tLink Text\tURL\tLG Asset ID\tHuman: File Type Labelled?\tHuman: Accessibility Comments\n';
 	for(i=0; i<e.length; i++) {
@@ -132,6 +135,9 @@ function getImgBySrc(src) {
 function outputLibGuideImages() {
 	var e,i,j;
 	var imgRep = outputImages();
+	if(imgRep.length == 0)
+		return '';
+	
 	var lines = imgRep.split('\n');
 	var temp = lines[0] + '\n';
 	// first line of column headers
