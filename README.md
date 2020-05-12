@@ -2,7 +2,7 @@
 
 These [bookmarklets/favelets](https://en.wikipedia.org/wiki/Bookmarklet) are designed for evaluating web accessibility, but are not necessarily tools for web developers. The primary purpose of these bookmarklets is to facilitate data collection of a site's accessibility alongside supporting some basic human verification. The generated TSV data can then be uploaded into a database for larger scale analyses. 
 
-Details about the bookmarklets and how to use them can be found on the [https://metageeky.github.io/accessibility-bookmarklet/](A11Y Bookmarklet resource page).
+Details about the bookmarklets and how to use them can be found on the [A11Y Bookmarklet resource page](https://metageeky.github.io/accessibility-bookmarklet/).
 
 ## External Resources
 
