@@ -11,37 +11,59 @@
 	<style>
 	* { 
 		box-sizing: border-box; 
-		font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+	}
+	
+	::-moz-focus-inner {
+		outline: none;
+		border: none;
 	}
 		
 	html, body {
-		line-height: 1.3;
+		line-height: 1.4;
 		margin: 0;
 		padding: 0 0.5em 0.5em;
-		background: #fff;
-		color: #000;
+		background: #fdfeff;
+		color: #252525;
 		font-size: calc(1rem + 0.25vw);
+		font-family: "Helvetica", sans-serif;
+		text-rendering: optimizeLegibility;
 	}
 	
 	header, main, footer {
 		display: block;
 		padding: 0;
 		margin: auto;
-		max-width: 700px;
+		min-width: 300px;
+		width: 70%;
+		max-width: 1000px;
 	}		
-	
+		
 	footer.content {
 		margin-top: 1em;
-		border-top: 3px #0018A8 solid;
+		border-top: 0.33em #7C0A02 solid;
 		padding: 0.25em 0 0;
+		text-align: right;
 	}
 	
 	
 	h1,h2,h3,h4,h5,h6 {
 		color: #7C0A02;
 	}
-	h1,h2,h3,h4,h5,h6 {
+	
+	h1 {
 		margin-bottom: 0.375em;
+	}
+	
+	h2 {
+		margin-bottom: 0;
+	}
+	
+	h3 {
+		margin: 0.75em 0 0.375em;
+	}
+	
+	h2 + h3 {
+		margin-top: 0.25em;
 	}
 	
 	a {
@@ -49,9 +71,24 @@
 		color: #0018A8;
 	}
 	
+	a:focus {
+		outline: dotted 3px #0018A8;
+		outline-offset: 2px;
+		text-decoration: none;
+	}
+	
 	p {
 		margin: 0;
 		line-height: 1.5;
+	}
+	
+	p + p {
+		margin-top: 0.5em;
+	}
+	
+	button {
+		font-size: inherit;
+		font-family: inherit;
 	}
 	
 	.sr-only:not(:focus):not(:active) {
@@ -66,7 +103,6 @@
 	a.sr-only:focus {
 		background: #0018A8;
 		color: #fff;
-		border: dashed 2px #fff;
 		padding: 8px;
 		position: fixed;
 		top: 5px;
@@ -74,24 +110,35 @@
 		outline: none;
 	}
 	
+	code {
+		font-family: "Lucida Console","Courier New",monospace;
+		color: #7C0A02;
+	}
+	
+	kbd {
+		border: 1px solid;
+		display: inline-block;
+		font-weight: 700;
+		line-height: 1;
+		padding: 2px 4px;
+		white-space: nowrap;
+		border-radius: 5px;
+		background: #eee;
+	}
+	
+	li + li {
+		margin-top: 0.25em;
+	}
+	
+	dd + dt {
+		margin-top: 0.5em;
+	}
+	
 	details summary { 
 		color: #0018A8;
 		font-weight: 700;
-		border: solid 3px #0018A8;
-		padding: 0.25em 0.5em;
-		border-radius: 0.375em;
 		margin-bottom: 0.25em;
-	}
-	
-	details[open] {
-		border: solid 3px #0018A8;
-		padding: 0.25em  0.5em 0.5em;
-		border-radius: 0.375em;
-	}
-	
-	details[open] > summary {
-		border: none;
-		padding: 0;
+		cursor: pointer;
 	}
 	
 	p + details {
@@ -118,46 +165,135 @@
 	details.code button {
 		font-size: initial;
 		font-weight: 700;
-		border: 2px solid #0018A8;
 		background: #0018A8;
+		border: 0;
 		color: #fff;
+		padding: 0.375em 0.625em;
+	}
+	details.code button:focus, details.code:hover {
+		color: #FFD700; 
+	}
+	details.code button:focus {
+		outline: dotted 3px  #0018A8;
+		outline-offset: 2px;
+	}
+	details.code button + button {
+		margin-left: 0.5em;
 	}
 	
-	code {
+	details.code code {
 		display: block;
-		margin-bottom: 0.5em;
+		margin-bottom: 0.25em;
 	}
-	code textarea{
-		font-family: "Lucida Console","Courier New",monospace;
-		font-size: 0.67em;
+	details.code code textarea {
+		color: #000;
+		font-size: 0.8em;
 		word-break: break-all;
 		overflow-wrap: anywhere;
-		border: solid 2px #0018A8;;
-		padding: 0.875em;
+		border: solid 2px #0018A8;
+		padding: 0.75em 0.875em;
 		width: 100%;		
 		resize: none;
 		overflow: hidden;
+	}
+	details.code code textarea:focus {
+		box-shadow: inset 0px 0px 10px 2px rgba(255,215,0,0.5);
+		border-color: #FFD700;
 	}
 	
 	.bookmarklet { 
 		color: #fff;
 		background: #284900;
-		padding: 0 0.5em;
+		padding: 0.25em 0.5em;
 		border-radius: 6px;
 		text-decoration: none;
+	}
+	a.bookmarklet:focus {
+		color: #FFD700;
+		outline: dotted 3px #284900;
+		outline-offset: 2px;
+	}
+	
+	h3.bm-section {
+		font-size: 1.33rem;
+	}
+	h3.bm-section button {
+		font-size: inherit;
+		padding: 0.25em;
+		font-weight: 700;
+		background: #7C0A02;
+		color: #fff;
+		display: block;
+		width: 100%;
+		text-align: left;
+		border: 0;
+		cursor: pointer;
+	}
+	h3.bm-section button:focus {
+		color: #FFD700;
+		outline: 3px #7C0A02 dotted;
+		outline-offset: 2px;
+	}
+	
+	h3.bm-section button[aria-expanded="true"]:before {
+		content: "\2212";
+	}
+	h3.bm-section button[aria-expanded="false"]:before {
+		content: "\002b";
+	}	
+	
+	h3.bm-section + div {
+		display: none;
+		padding: 0.5em 0.5em 0.5em 0.75em;
+		border-left: solid #284900 0.5em;
+	}
+
+	h3.bm-section + div details[open] summary {
+		position: relative;
+		margin-bottom: 0.5em;
+	}
+
+	h3.bm-section + div details[open] summary:before {
+		content: "";
+		position: absolute;
+		width: 100%;
+		height: 0.2em;
+		bottom: -0.2em;
+		left: 0;
+		right: 0;
+		background-color: #0018A8;
+	}
+
+	h3.bm-section + div details summary:focus {
+		outline: #0018A8 dotted 3px;
+		outline-offset: 2px;
+	}
+	
+	div#quick {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		justify-content: center;
+		align-content: center;
+		align-items: center;
+		margin-top: 0.5em;
+	}
+	div#quick a.bookmarklet {
+		font-size: 1rem;
+		white-space: nowrap;
+		margin: 0.375em;
 	}
 	</style>
 </head>
 
 <body>
-	<a href="#main" class="sr-only">
-	Skip to main content
-	</a>
+
 
 	<header class="content">
-	<h1>
-		<abbr title="Accessibility">A11Y</abbr> Bookmarklets
-	</h1>
+		<a href="#main" class="sr-only">Skip to main content</a>
+		<h1>
+			<abbr title="Accessibility">A11Y</abbr> Bookmarklets
+		</h1>
 	</header>
 
 	<main id="main" class="content" aria-label="content">
@@ -176,64 +312,283 @@
 			href="https://www.mozilla.org/en-US/MPL/2.0/">Mozilla Public License 
 			Version 2.0</a>.
 		</p>
-		
-		<h2>Bookmarklets</h2>
-		
-		<h3>Installation</h3>
+			
+		<h2>Installation</h2>
 		<p>
 			To use any of the bookmarklets, drag the 
 			<span class="bookmarklet">Bookmarklet</span> to your browser's 
 			bookmark toolbar. Alternatively, manually create a new bookmark 
-			and copy-paste the <em>bookmarklet code</em> into the bookmark's
-			location/URL.
+			and copy-paste the <em>bookmarklet code</em> (see the Bookmarklet Details
+			below) into the bookmark's location/URL.
 		</p>
-
 		
-		<h3>A11Y Report Tool</h3>
+		<div id="quick">
+			<a class="bookmarklet" href="javascript: (function() { /* From https://github.com/metageeky/accessibility-bookmarklet by metageeky. Mozilla Public License Version 2.0 */ function a11yStartup() { loadingNotice('A11Y Reporter is loading...<br>Refresh page to cancel'); runA11YTool(generateReport); } function generateReport() { axe.run().then( results => {writeGeneralReport(results)}); removeLoadingNotice(); } /* RUNNING CODE */ if(typeof document.A11Y_REQUIREMENTS === 'undefined') document.A11Y_REQUIREMENTS = []; document.A11Y_REQUIREMENTS.push('general-report-tests.js'); document.A11Y_REQUIREMENTS.push('report-ui.js'); document.A11Y_REQUIREMENTS.push('image-reviewer-ui.js'); document.A11Y_REQUIREMENTS.push('tabbable-reviewer-ui.js'); var e = document.createElement('script'); e.onload = a11yStartup; e.src = 'https://metageeky.github.io/accessibility-bookmarklet/libraries/a11y-core-functions.js'; document.body.appendChild(e); }());">A11Y Reporter</a>
+		
+			<a class="bookmarklet" href="javascript: (function() { /* From https://github.com/metageeky/accessibility-bookmarklet by metageeky. Mozilla Public License Version 2.0 */ function a11yStartup() { loadingNotice('A11Y Reporter is loading...<br>Refresh page to cancel'); runA11YTool(generateReport); } function generateReport() { axe.run().then( results => {writeLibGuideReport(results)}); removeLoadingNotice(); } /* RUNNING CODE */ if(typeof document.A11Y_REQUIREMENTS === 'undefined') document.A11Y_REQUIREMENTS = []; document.A11Y_REQUIREMENTS.push('general-report-tests.js'); document.A11Y_REQUIREMENTS.push('libguide-report-tests.js'); document.A11Y_REQUIREMENTS.push('report-ui.js'); document.A11Y_REQUIREMENTS.push('image-reviewer-ui.js'); document.A11Y_REQUIREMENTS.push('tabbable-reviewer-ui.js'); var e = document.createElement('script'); e.onload = a11yStartup; e.src = 'https://metageeky.github.io/accessibility-bookmarklet/libraries/a11y-core-functions.js'; document.body.appendChild(e); }());">A11Y LibGuide</a>
+			
+			<a class="bookmarklet" href="javascript:(function(){/* From https://github.com/metageeky/accessibility-bookmarklet by metageeky. Mozilla Public License Version 2.0 */ function b(){loadingNotice('A11Y Image Reviewer is loading...<br>Refresh page to cancel');runA11YTool(a)}function a(){createImageReviewer();removeLoadingNotice()}if(typeof document.A11Y_REQUIREMENTS==='undefined'){document.A11Y_REQUIREMENTS=[]}document.A11Y_REQUIREMENTS.push('image-reviewer-ui.js');var c=document.createElement('script');c.onload=b;c.src='https://metageeky.github.io/accessibility-bookmarklet/libraries/a11y-core-functions.js';document.body.appendChild(c)}());">A11Y Graphics</a>
+			
+			<a class="bookmarklet" href="javascript:(function(){/* From https://github.com/metageeky/accessibility-bookmarklet by metageeky. Mozilla Public License Version 2.0 */ function a(){loadingNotice('A11Y Tabbable Reviewer is loading...<br>Refresh page to cancel');runA11YTool(b)}function b(){createTabbingReviewer();removeLoadingNotice()}if(typeof document.A11Y_REQUIREMENTS==='undefined'){document.A11Y_REQUIREMENTS=[]}document.A11Y_REQUIREMENTS.push('tabbable-reviewer-ui.js');var c=document.createElement('script');c.onload=a;c.src='https://metageeky.github.io/accessibility-bookmarklet/libraries/a11y-core-functions.js';document.body.appendChild(c)}());">A11Y Tabbings</a>
+		</div>
+		
+		
+		<h2>A11Y Bookmarklet Details</h2>
+		<h3 id="report-tool" class="bm-section">
+			<button aria-expanded="false" aria-controls="report-info">
+				A11Y Report Tool
+			</button>
+		</h3>
+		<div id="report-info">
+			<p>
+				The <a class="bookmarklet" href="javascript: (function() { /* From https://github.com/metageeky/accessibility-bookmarklet by metageeky. Mozilla Public License Version 2.0 */ function a11yStartup() { loadingNotice('A11Y Reporter is loading...<br>Refresh page to cancel'); runA11YTool(generateReport); } function generateReport() { axe.run().then( results => {writeGeneralReport(results)}); removeLoadingNotice(); } /* RUNNING CODE */ if(typeof document.A11Y_REQUIREMENTS === 'undefined') document.A11Y_REQUIREMENTS = []; document.A11Y_REQUIREMENTS.push('general-report-tests.js'); document.A11Y_REQUIREMENTS.push('report-ui.js'); document.A11Y_REQUIREMENTS.push('image-reviewer-ui.js'); document.A11Y_REQUIREMENTS.push('tabbable-reviewer-ui.js'); var e = document.createElement('script'); e.onload = a11yStartup; e.src = 'https://metageeky.github.io/accessibility-bookmarklet/libraries/a11y-core-functions.js'; document.body.appendChild(e); }());">A11Y Reporter</a> performs and 
+				reports on a variety of accessibility tests and heuristics. The 
+				findings are reported in a human-readable, tab-separated format for
+				easy insertion into a spreadsheet or database. Any columns requiring
+				human validation have column headers beginning with "Human:". 
+			</p>
+			<p>Integrated into the report tool are the <a href="#graphics-tool">A11Y 
+			   Graphics</a> and <a href="#tabbings-tool">A11Y Tabbings</a> tools.
+				These are meant to support the human validation efforts.
+			</p>
+			<details>
+				<summary>Tests &amp; Heuristics</summary>
+				<ul>
+					<li>The full <a href="https://github.com/dequelabs/axe-core/blob/develop/doc/rule-descriptions.md">
+					axe-core ruleset</a></li>
+					<li>Outline of headings for current page view</li>
+					<li>Heuristic detection of possible headings</li>
+					<li>ARIA/HTML5 Landmarks</li>
+					<li>Ordered list of detectable tabbable elements (requires human 
+					validation)</li>
+					<li>All graphic elements (img, svg, etc.) and their accessible
+						 name values (requires human validation)</li>
+					<li>Embedded audio/video elements (requires human validation></li>
+					<li>Linked files and documents (requires human validation)</li>
+					<li>Detect of popular font-based icon frameworks</li>
+				</ul>
+			</details>
+			<details>
+				<summary>Usage Notes</summary>
+				<ul>
+					<li>Support tools are available under the Instructions section 
+						 of the Reporter interface</li>
+					<li>After closing the Reporter, refresh/reload the page if you wish to
+					    use the page or if you want to run more tests. The Reporter
+						 tool does its best to not leave after effects, but this is
+						 not guaranteed.
+					</li>
+				</ul>
+			</details>
+			<details class="code">
+				<summary>Code</summary>
+				<code>
+					<textarea readonly aria-label="A11Y Reporter code" spellcheck="false">javascript: (function() { /* From https://github.com/metageeky/accessibility-bookmarklet by metageeky. Mozilla Public License Version 2.0 */ function a11yStartup() { loadingNotice('A11Y Reporter is loading...&lt;br&gt;Refresh page to cancel'); runA11YTool(generateReport); } function generateReport() { axe.run().then( results => {writeGeneralReport(results)}); removeLoadingNotice(); } /* RUNNING CODE */ if(typeof document.A11Y_REQUIREMENTS === 'undefined') document.A11Y_REQUIREMENTS = []; document.A11Y_REQUIREMENTS.push('general-report-tests.js'); document.A11Y_REQUIREMENTS.push('report-ui.js'); document.A11Y_REQUIREMENTS.push('image-reviewer-ui.js'); document.A11Y_REQUIREMENTS.push('tabbable-reviewer-ui.js'); var e = document.createElement('script'); e.onload = a11yStartup; e.src = 'https://metageeky.github.io/accessibility-bookmarklet/libraries/a11y-core-functions.js'; document.body.appendChild(e); }());</textarea>
+				</code>
+				<button class="select">Select Code</button> 
+				<button class="copy">Copy to Clipboard</button>
+			</details>
+		</div>	
+		 
+		<h3 id="libguide-tool" class="bm-section">
+			<button aria-expanded="false" aria-controls="libguide-info">
+				A11Y LibGuide Report Tool
+			</button>
+		</h3>
+		<div id="libguide-info">
+			<p>
+				The <a class="bookmarklet" href="javascript: (function() { /* From https://github.com/metageeky/accessibility-bookmarklet by metageeky. Mozilla Public License Version 2.0 */ function a11yStartup() { loadingNotice('A11Y Reporter is loading...<br>Refresh page to cancel'); runA11YTool(generateReport); } function generateReport() { axe.run().then( results => {writeLibGuideReport(results)}); removeLoadingNotice(); } /* RUNNING CODE */ if(typeof document.A11Y_REQUIREMENTS === 'undefined') document.A11Y_REQUIREMENTS = []; document.A11Y_REQUIREMENTS.push('general-report-tests.js'); document.A11Y_REQUIREMENTS.push('libguide-report-tests.js'); document.A11Y_REQUIREMENTS.push('report-ui.js'); document.A11Y_REQUIREMENTS.push('image-reviewer-ui.js'); document.A11Y_REQUIREMENTS.push('tabbable-reviewer-ui.js'); var e = document.createElement('script'); e.onload = a11yStartup; e.src = 'https://metageeky.github.io/accessibility-bookmarklet/libraries/a11y-core-functions.js'; document.body.appendChild(e); }());">A11Y LibGuide</a> bookmarklet is a specialized
+				version of the <a href="#report-tool">A11Y Reporter</a> tool for <a href="https://springshare.com/libguides/">
+				Springshare's LibGuides</a> platform. In addition to the general 
+				accessibility tests and heuristics, additional tests are performed
+				specific to LibGuides: 
+			</p>
+			<details>
+				<summary>LibGuide Specific Tests &amp; Heuristics</summary>
+				<ul>
+					<li>Gathers information about the guide's layout (top or side
+					    navigation), use of a friendly URL, and any associated content 
+						 owners (based on presence of profile boxes).
+					</li>
+					<li>Adjusted informaiton about graphics that includes tagging if
+						 an image is a book cover from the "Book from the Catalog" 
+						 widget.
+					 </li>
+					 <li>Adjusted information about linked files on guides, including
+						  the item's internal asset ID.
+					  </li>
+				</ul>
+			</details>
+			<details>
+				<summary>Usage Notes</summary>
+				<ul>
+					<li>This tool runs the same as the Reporter tool save for the
+					    different tests and heuristics. This includes the integration
+						 of the <a href="#graphics-tool">Graphics</a> and <a href="#tabbings-tool">
+						 Tabbings</a> tools.
+					</li>
+					<li>Running the LibGuides tool on a non-LibGuide page will
+					    produce erroneous results without any warning. Do not do
+						 this if you want useful data.
+					</li>
+					<li>This tool works best on individual guide pages and may
+					    produce mixed results on other pages (e.g., landing page,
+						 A-Z list, search results, etc.). 
+					</li>
+				</ul>
+			</details>
+			<details class="code">
+				<summary>Code</summary>
+				<code>
+					<textarea aria-label="A11Y LibGuide code" readonly spellcheck="false">javascript: (function() { /* From https://github.com/metageeky/accessibility-bookmarklet by metageeky. Mozilla Public License Version 2.0 */ function a11yStartup() { loadingNotice('A11Y Reporter is loading...&lt;br&gt;Refresh page to cancel'); runA11YTool(generateReport); } function generateReport() { axe.run().then( results => {writeLibGuideReport(results)}); removeLoadingNotice(); } /* RUNNING CODE */ if(typeof document.A11Y_REQUIREMENTS === 'undefined') document.A11Y_REQUIREMENTS = []; document.A11Y_REQUIREMENTS.push('general-report-tests.js'); document.A11Y_REQUIREMENTS.push('libguide-report-tests.js'); document.A11Y_REQUIREMENTS.push('report-ui.js'); document.A11Y_REQUIREMENTS.push('image-reviewer-ui.js'); document.A11Y_REQUIREMENTS.push('tabbable-reviewer-ui.js'); var e = document.createElement('script'); e.onload = a11yStartup; e.src = 'https://metageeky.github.io/accessibility-bookmarklet/libraries/a11y-core-functions.js'; document.body.appendChild(e); }());</textarea>
+				</code>
+				<button class="select">Select Code</button> 
+				<button class="copy">Copy to Clipboard</button>
+			</details>		
+		</div>
+
+		<h3 id="graphics-tool" class="bm-section">
+			<button aria-expanded="false" aria-controls="graphics-info">
+				A11Y Graphics Tool
+			</button>
+		</h3>
+		<div id="graphics-info">
+			<p>
+				The <a class="bookmarklet" href="javascript:(function(){/* From https://github.com/metageeky/accessibility-bookmarklet by metageeky. Mozilla Public License Version 2.0 */ function b(){loadingNotice('A11Y Image Reviewer is loading...<br>Refresh page to cancel');runA11YTool(a)}function a(){createImageReviewer();removeLoadingNotice()}if(typeof document.A11Y_REQUIREMENTS==='undefined'){document.A11Y_REQUIREMENTS=[]}document.A11Y_REQUIREMENTS.push('image-reviewer-ui.js');var c=document.createElement('script');c.onload=b;c.src='https://metageeky.github.io/accessibility-bookmarklet/libraries/a11y-core-functions.js';document.body.appendChild(c)}());">A11Y Graphics</a> bookmarklet 
+				supports review of graphical elements on a page. Upon loading, one 
+				can review the accessible name and any additional description if available. 
+			</p>
+			<p>The A11Y Graphics tool is integrated into the 
+				<a href="#report-tool">A11Y Reporter</a> and 
+			   <a href="#libguide-tool">A11Y LibGuides</a> bookmarklets to 
+				faciliate human validation on the quality of accessible descriptions 
+				of graphics on a page.
+			</p>
+			<details>
+				<summary>Usage Notes</summary>
+				<ul>
+					<li>The bookmarklet detects all graphics in <code style="html">&lt;img&gt;</code>,
+						 <code style="html">&lt;svg&gt;</code>, and 
+						 <code style="html">[role="img"]</code> elements on the page.
+						 The tool does not currently detect <code style="html">&lt;input 
+						 type="image"&gt;</code> elements.
+					</li>
+					<li>Graphics due to use of <code style="html">background-image</code> CSS
+					    or font-based symbols are NOT detected by this tool.
+					</li>
+					<li>When possible, graphics are displayed as they appear on a page
+						 using the same CSS and dimensions.
+					</li>
+					<li>Due to image loading protocols, if an image does not appear
+					    properly in the tool, try moving to another image and back
+						 to trigger correct rendering.
+					</li>
+				</ul>
+			</details>
+			<details class="code">
+				<summary>Code</summary>
+				<code>
+					<textarea aria-label="A11Y Graphics code" readonly spellcheck="false">javascript:(function(){/* From https://github.com/metageeky/accessibility-bookmarklet by metageeky. Mozilla Public License Version 2.0 */ function b(){loadingNotice('A11Y Image Reviewer is loading...<br>Refresh page to cancel');runA11YTool(a)}function a(){createImageReviewer();removeLoadingNotice()}if(typeof document.A11Y_REQUIREMENTS==='undefined'){document.A11Y_REQUIREMENTS=[]}document.A11Y_REQUIREMENTS.push('image-reviewer-ui.js');var c=document.createElement('script');c.onload=b;c.src='https://metageeky.github.io/accessibility-bookmarklet/libraries/a11y-core-functions.js';document.body.appendChild(c)}());</textarea>
+				</code>
+				<button class="select">Select Code</button> 
+				<button class="copy">Copy to Clipboard</button>
+			</details>		
+		</div>
+			
+		<h3 id="tabbings-tool" class="bm-section">
+			<button aria-expanded="false" aria-controls="tabbings-info">
+				A11Y Tabbings Tool
+			</button>
+		</h3>
+		<div id="tabbings-info">
+			 
+			<p>
+				The <a class="bookmarklet" href="javascript:(function(){/* From https://github.com/metageeky/accessibility-bookmarklet by metageeky. Mozilla Public License Version 2.0 */ function a(){loadingNotice('A11Y Tabbable Reviewer is loading...<br>Refresh page to cancel');runA11YTool(b)}function b(){createTabbingReviewer();removeLoadingNotice()}if(typeof document.A11Y_REQUIREMENTS==='undefined'){document.A11Y_REQUIREMENTS=[]}document.A11Y_REQUIREMENTS.push('tabbable-reviewer-ui.js');var c=document.createElement('script');c.onload=a;c.src='https://metageeky.github.io/accessibility-bookmarklet/libraries/a11y-core-functions.js';document.body.appendChild(c)}());">A11Y Tabbings</a> bookmarklet 
+				allows one to review the tabbable/focusable elements on a page. The interface
+				follows along the page with the current focus on the page. At each
+				focused element, the accessible name is provided.
+			</p>
+			
+			<p>The A11Y Tabbings tool is integrated into the <a href="#report-tool">
+			   A11Y Reporter</a> and <a href="#libguide-tool">A11Y LibGuides</a> 
+				bookmarklets to faciliate human validation on the
+				quality of accessible descriptions of graphics on a page.
+			</p>
+			 
+			<details>
+				<summary>Usage Notes</summary>
+				<ul>
+					<li>The Tabbings tool starts at the beginning of the document and
+						 will reset to the position if necessary. You can press 
+						 <kbd>R</kbd> at any time to reset the tabbing to this starting
+						 point.
+					</li>
+					<li>The tabbing interface follows focus change. Generally, focus
+						 is changed via the <kbd>TAB</kbd> and <kbd>Shift+TAB</kbd>
+						 keys. For some interactive elements, the arrow keys may be
+						 used.
+					</li>
+					<li>If the current focus is not visible, the <kbd>F</kbd> will
+					    draw a border around the current element. This feature should
+						 not be used when determining if the focus meets visibility
+						 requirements.
+					</li>
+					<li>If a focus change moves to an element that was not expected
+					    (often due to dynamic changes in the DOM), the tool will
+						 report this sudden skip. Similar messages are indicated if
+						 the tab was expected but in a different order. 
+					</li>
+				</ul>
+			</details>
+			<details class="code">
+				<summary>Code</summary>
+				<code>
+					<textarea aria-label="A11Y Tabbable code" readonly spellcheck="false">javascript:(function(){/* From https://github.com/metageeky/accessibility-bookmarklet by metageeky. Mozilla Public License Version 2.0 */ function a(){loadingNotice('A11Y Tabbable Reviewer is loading...&lt;br&gt;Refresh page to cancel');runA11YTool(b)}function b(){createTabbingReviewer();removeLoadingNotice()}if(typeof document.A11Y_REQUIREMENTS==='undefined'){document.A11Y_REQUIREMENTS=[]}document.A11Y_REQUIREMENTS.push('tabbable-reviewer-ui.js');var c=document.createElement('script');c.onload=a;c.src='https://metageeky.github.io/accessibility-bookmarklet/libraries/a11y-core-functions.js';document.body.appendChild(c)}());</textarea>
+				</code>
+				<button class="select">Select Code</button> 
+				<button class="copy">Copy to Clipboard</button>
+			</details>		
+		</div>
+				
+		<h2>Security Issues</h2>
 		<p>
-			The <a class="bookmarklet" href="">A11Y Reporter</a> performs and 
-			reports on a variety of accessibility tests and heuristics. The 
-			findings are reported in a human-readable, tab-separated format for
-			easy insertion into a spreadsheet or database. Any columns requiring
-			human validation have column headers beginning with "Human:".
+			Due to website <a href="https://medium.com/making-instapaper/bookmarklets-are-dead-d470d4bbb626">
+			Content Security Policies</a>, many sites will not allow bookmarklets to 
+			run. Technically, this is a known browser implementation issue that has
+			been known for quite a while. Until browsers determine a way to allow 
+			trusting of bookmarklets, these tools cannot be used on their own without
+			the aid of other tools. The following browser extentions can temporarily
+			mitigate any <abbr title="Content Security Policies">CSP</abbr> 
+			restrictions:
 		</p>
-		<details>
-			<summary>Tests &amp; Heuristics</summary>
-			<ul>
-				<li>The full <a href="https://github.com/dequelabs/axe-core/blob/develop/doc/rule-descriptions.md">
-				axe-core ruleset</a></li>
-				<li>Outline of headings for current page view</li>
-				<li>Heuristic detection of possible headings</li>
-				<li>ARIA/HTML5 Landmarks</li>
-				<li>Ordered list of detectable tabbable elements (requires human 
-				validation)</li>
-				<li>All graphic elements (img, svg, etc.) and their accessible
-					 name values (requires human validation)</li>
-				<li>Embedded audio/video elements (requires human validation></li>
-				<li>Linked files and documents (requires human validation)</li>
-				<li>Detect of popular font-based icon frameworks</li>
-			</ul>
-		</details>
-		<details class="code" open>
-			<summary>Code</summary>
-			<code>
-				<textarea readonly spellcheck="false">javascript: (function() { /* From https://github.com/metageeky/accessibility-bookmarklet by metageeky. Mozilla Public License Version 2.0 */ function a11yStartup() { loadingNotice('A11Y Reporter is loading...&lt;br&gt;Refresh page to cancel'); runA11YTool(generateReport); } function generateReport() { axe.run().then( results => {writeGeneralReport(results)}); removeLoadingNotice(); } /* RUNNING CODE */ if(typeof document.A11Y_REQUIREMENTS === 'undefined') document.A11Y_REQUIREMENTS = []; document.A11Y_REQUIREMENTS.push('general-report-tests.js'); document.A11Y_REQUIREMENTS.push('report-ui.js'); document.A11Y_REQUIREMENTS.push('image-reviewer-ui.js'); document.A11Y_REQUIREMENTS.push('tabbable-reviewer-ui.js'); var e = document.createElement('script'); e.onload = a11yStartup; e.src = 'https://metageeky.github.io/accessibility-bookmarklet/libraries/a11y-core-functions.js'; document.body.appendChild(e); }());</textarea>
-			</code>
-			<button class="select">Select Code</button> 
-			<button class="copy">Copy to Clipboard</button>
-		</details>
-		
-		
+		<dl>
+			<dt>Mozilla Firefox: <a href="https://addons.mozilla.org/en-US/firefox/addon/laboratory-by-mozilla/?src=search">Laboratory
+			CSP Toolkit</a></dt>
+			<dd>
+				This add-on allows one to disable any CSP policy temporarily for
+				a site. To do so, click on the Laboratory icon. When the <em>Content
+				Security Panel</em> opens, check the box that reads 'Record this site 
+				(will disable existing CSP while recording)'. Reload the page and you
+				will be able to run any bookmarklet. When done, open the extension
+				again and uncheck the box.
+			</dd>
+			
+			<dt>Google Chrome: <a href="https://chrome.google.com/webstore/detail/disable-content-security/ieelmcmcagommplceebfedjlakkhpden">Disable Content-Security-Policy</a></dt>
+			<dd>
+				This extension allows one to toggle on and off the CSP for any site. 
+				To use, click the Disable CSP icon. Reload the tab. Any page loaded 
+				in the tab will be able to run any bookmarklet. To reactivate CSP 
+				for the tab, click the icon again or simply close the tab.
+			</dd>
+		</dl>
 	
-
-		
 		<h2>Acknowledgments</h2>
 		<p>
 			This project owes its completion to the open source efforts by <a 
 			href="https://github.com/dequelabs/axe-core">dequelabs</a>,
 			<a href="https://github.com/davidtheclark/tabbable">davidtheclark</a>, 
 			and <a href="https://github.com/WhatSock/w3c-alternative-text-computation">
-			WhatSock</a> as well as many fruitful conversations on the 
+			WhatSock</a>. Additional thanks go to the many fruitful conversations on the 
 			<a href="https://web-a11y.slack.com">Web A11Y slack</a>.
 		</p>
 
@@ -249,6 +604,17 @@
 			var e = document.querySelectorAll('textarea');
 			for(i=0; i<e.length; i++)
 				e[i].style.height = e[i].scrollHeight + 'px';
+		}
+		function prepareCodeDetails() {
+			var i;
+			var e = document.querySelectorAll('details.code');
+			for(i=0; i<e.length; i++) {
+				e[i].addEventListener('toggle', function() {
+					var t = this.querySelector('textarea');
+					if(t)
+						t.style.height = t.scrollHeight + 'px';
+				});
+			}
 		}
 		function prepareSelectAllButtons() {
 			var i;
@@ -275,10 +641,28 @@
 				});
 			}
 		}		
+		function prepareExpandButtons() {
+			var i=0;
+			var e = document.querySelectorAll('h3.bm-section button');
+			for(i=0; i<e.length; i++) {
+				e[i].addEventListener('click',function(e) {
+					var d = document.getElementById(this.getAttribute('aria-controls'));
+					if(this.getAttribute('aria-expanded') === 'true') {
+						d.style.display = 'none';
+						this.setAttribute('aria-expanded',false);
+					}
+					else {
+						d.style.display = 'block';
+						this.setAttribute('aria-expanded',true);
+					}
+				});
+			}
+		}
 		window.addEventListener('load', function () {
-			resizeTextAreas();
+			prepareCodeDetails();
 			prepareSelectAllButtons();
 			prepareCopyButtons();
+			prepareExpandButtons();
 		});
 	</script>
 	
