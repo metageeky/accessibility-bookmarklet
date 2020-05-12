@@ -42,9 +42,16 @@
 		margin-top: 1em;
 		border-top: 0.33em #7C0A02 solid;
 		padding: 0.25em 0 0;
-		text-align: right;
+		display: flex; 
+		flex-direction: row;
+		flex-wrap: nowrap;
+		justify-content: space-between;
+		align-content: center;
+		align-items: center;
+   }
+	footer.content	p, footer.content p + p {
+		margin: 0 !important;
 	}
-	
 	
 	h1,h2,h3,h4,h5,h6 {
 		color: #7C0A02;
@@ -595,7 +602,8 @@
 	</main>
 	
 	<footer class="content">
-	<p>From <a href="https://twitter.com/metageeky">@metageeky</a></p>
+		<p>Random Kraken: &#128025; &#129425;</p>
+		<p>From <a href="https://twitter.com/metageeky">@metageeky</a></p>
 	</footer>
 	
 	<script> 
