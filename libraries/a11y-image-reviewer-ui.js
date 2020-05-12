@@ -186,6 +186,6 @@ function copyStyleRecursion(e,f) {
 	var c_e = e.childNodes();
 	var c_f = f.childNodes();
 	var i;
-	for(i=0l i < c_e.length; i++)
+	for(i=0; i < c_e.length; i++)
 		copyStyleRecursion(c_e[i], c_f[i]);
 }
