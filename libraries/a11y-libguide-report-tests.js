@@ -60,8 +60,12 @@ function writeLibGuideReport(axe_results) {
 }
 
 
-function isLG_SideTabs() {
-	return (document.querySelector('.s-lg-tabs-side') !== null);
+function getNavigationType() {
+	if(document.getElementById('s-lg-side-nav-content') !== null)
+		return 'SIDE';
+	if(document.getElementById('s-lg-guide-tabs') !== null)
+		return 'TOP';
+	return 'UNKNOWN';
 }
 
 function outputLibGuideInformation() {
@@ -70,10 +74,7 @@ function outputLibGuideInformation() {
 	ret = 'LIBGUIDE INFORMATION\n';
 	
 	ret += 'Navigation:\t';
-	if(isLG_SideTabs())
-		ret += 'Side';
-	else
-		ret += 'Top';
+	ret += getNavigationType();
 	ret += '\n';
 	
 	ret += 'Friendly URL:\t';
