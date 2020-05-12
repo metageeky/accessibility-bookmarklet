@@ -344,7 +344,7 @@ function outputImages() {
 			f = e[i].querySelectorAll('title');
 			t = '';
 			for(j=0; j<f.length; j++)
-				t += ' | ' + f[i].textContent;
+				t += ' | ' + f[j].textContent;
 			ret += t;
 		}
 		ret += '\t';
