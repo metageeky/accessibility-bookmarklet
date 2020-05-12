@@ -107,13 +107,12 @@ function outputPossibleHeadings() {
 		var t = e[i].innerText.trim();
 		var s = window.getComputedStyle(e[i]);
 		if(s['display'] === 'block' && t.length > 0 && t.length <= 100) {
-			if(parseInt(s['font-size']) >= 20 || parseInt(s['font-weight']) > 400) {
+			if(parseInt(s['font-size']) >= 22 || parseInt(s['font-weight']) > 400) {
 				ret += e[i].nodeName + '\t';
 				ret += t + '\t' + t.length + '\t';
 				ret += s['font-size'] + '\t' + s['font-weight'] + '\n';
 			}
 		}
-
 	}
 	if(ret.length > 0) {
 		ret = 'Node\tText\tLength\tSize\tWeight\n' + ret;
