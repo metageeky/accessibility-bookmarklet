@@ -183,8 +183,8 @@ function copyStyleRecursion(e,f) {
 	if(e.nodeType !== Node.ELEMENT_NODE || f.nodeType !== Node.ELEMENT_NODE)
 		return;
 	
-	var e_style = window.getComputedStyle(e).cssText;
-	if (e.style.cssText !== '') {
+	var e_style = window.getComputedStyle(e);
+	if (e_style.cssText !== '') {
 		f.style.cssText = e_style.cssText;
 	} 
 	else {
