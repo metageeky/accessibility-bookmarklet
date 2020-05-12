@@ -7,6 +7,7 @@ function loadingNotice(msg) {
 	var notice = document.createElement('DIV');
 	notice.id = 'a11y-loader';
 	notice.style.cssText = notice_style;
+	notice.setAttribute('role','dialog'); // added to make div not detected by axe-core
 	var notice_msg = document.createElement('DIV');
 	notice_msg.style.cssText = notice_msg_style;
 	notice_msg.innerHTML = msg;
