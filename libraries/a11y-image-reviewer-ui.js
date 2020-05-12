@@ -183,8 +183,8 @@ function copyStyleRecursion(e,f) {
 	if(e.nodeType !== Node.ELEMENT_NODE || f.nodeType !== Node.ELEMENT_NODE)
 		return;
 	f.style.cssText = window.getComputedStyle(e).cssText;
-	var c_e = e.childNodes();
-	var c_f = f.childNodes();
+	var c_e = e.childNodes;
+	var c_f = f.childNodes;
 	var i;
 	for(i=0; i < c_e.length; i++)
 		copyStyleRecursion(c_e[i], c_f[i]);
