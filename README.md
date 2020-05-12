@@ -1,8 +1,8 @@
 # A11Y Bookmarklets
 
-These [bookmarklets/favelets](https://en.wikipedia.org/wiki/Bookmarklet) are designed for evaluating web accessibility, but are not necessarily tools for web developers. The primary purpose of these bookmarklets is to facilitate data collection of a site's accessibility alongside supporting some basic human verification. The generated CSV data can then be uploaded into a database for larger scale analyses.
+These [bookmarklets/favelets](https://en.wikipedia.org/wiki/Bookmarklet) are designed for evaluating web accessibility, but are not necessarily tools for web developers. The primary purpose of these bookmarklets is to facilitate data collection of a site's accessibility alongside supporting some basic human verification. The generated TSV data can then be uploaded into a database for larger scale analyses. 
 
-In particular, these tools are an integral part to a large-scale Library Accessible E-Resources study (link forthcoming).
+Details about the bookmarklets and how to use them can be found on the [A11Y Bookmarklet resource page](https://metageeky.github.io/accessibility-bookmarklet/).
 
 ## External Resources
 
