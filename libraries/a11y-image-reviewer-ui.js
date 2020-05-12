@@ -184,7 +184,6 @@ function copyStyleRecursion(e,f) {
 		return;
 	
 	var e_style = window.getComputedStyle(e).cssText;
-	const styles = window.getComputedStyle(node);
 	if (e.style.cssText !== '') {
 		f.style.cssText = e_style.cssText;
 	} 
