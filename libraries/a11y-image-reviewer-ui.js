@@ -182,7 +182,20 @@ function updateCurrentImage(doc) {
 function copyStyleRecursion(e,f) {
 	if(e.nodeType !== Node.ELEMENT_NODE || f.nodeType !== Node.ELEMENT_NODE)
 		return;
-	f.style.cssText = window.getComputedStyle(e).cssText;
+	
+	var e_style = window.getComputedStyle(e).cssText;
+	const styles = window.getComputedStyle(node);
+	if (e.style.cssText !== '') {
+		f.style.cssText = e_style.cssText;
+	} 
+	else {
+		const cssText = Object.values(e_style).reduce(
+        (css, propertyName) =>
+            `${css}${propertyName}:${e_style.getPropertyValue(propertyName)};`
+		);
+		f.style.cssText = cssText;
+	}
+    
 	var c_e = e.childNodes;
 	var c_f = f.childNodes;
 	var i;
