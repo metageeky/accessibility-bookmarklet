@@ -103,11 +103,13 @@ function outputPossibleHeadings() {
 	var ret = '';
 	var i;
 
+	var rem = parseInt(window.getComputedStyle(document.body).fontSize) + 0.0;
+
 	for(i=0; i<e.length; i++) {
 		var t = e[i].innerText.trim();
 		var s = window.getComputedStyle(e[i]);
 		if(s['display'] === 'block' && t.length > 0 && t.length <= 100) {
-			if(parseInt(s['font-size']) >= 22 || parseInt(s['font-weight']) > 400) {
+			if(parseInt(s['font-size'])/rem >= 1.15 || parseInt(s['font-weight']) > 400) {
 				ret += e[i].nodeName + '\t';
 				ret += t + '\t' + t.length + '\t';
 				ret += s['font-size'] + '\t' + s['font-weight'] + '\n';
