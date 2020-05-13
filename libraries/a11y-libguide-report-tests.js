@@ -6,13 +6,14 @@ document.A11Y_REQUIREMENTS.push('general-report-tests.js');
 document.A11Y_REQUIREMENTS.push('report-ui.js');
 
 // shibboleth for detecting loading
-var _shibA11YLibGuideRepTests = 1;
+var _shibA11YLibGuideRepTests = 1.0;
 
 // Lib Guide Report 
 function writeLibGuideReport(axe_results) {
 	var rep = '';
 		
 	/* standard info */
+	rep += 'LibGuide A11Y Report:\t' + _shibA11YLibGuideRepTests + '\n';
 	rep += 'TITLE:\t' + document.title + '\n'; 
 	rep += 'URL:\t' + document.location.href + '\n';
 	rep += 'DATETIME:\t' + (new Date()).toISOString() + '\n';

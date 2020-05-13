@@ -9,13 +9,14 @@ document.A11Y_REQUIREMENTS.push('w3c-alternative-text-computation.js');
 document.A11Y_REQUIREMENTS.push('report-ui.js');
 
 // shibboleth for detecting loading
-var _shibA11YGenRepTests = 1;
+var _shibA11YGenRepTests = 1.0;
 
 // General Report output
 function writeGeneralReport(axe_results) {
 	var rep = '';
 		
 	/* standard info */
+	rep += 'A11Y Report:\t' + _shibA11YGenRepTests + '\n';
 	rep += 'TITLE:\t' + document.title + '\n'; 
 	rep += 'URL:\t' + document.location.href + '\n';
 	rep += 'DATETIME:\t' + (new Date()).toISOString() + '\n'
