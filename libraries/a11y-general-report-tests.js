@@ -9,7 +9,7 @@ document.A11Y_REQUIREMENTS.push('w3c-alternative-text-computation.js');
 document.A11Y_REQUIREMENTS.push('report-ui.js');
 
 // shibboleth for detecting loading
-var _shibA11YGenRepTests = 1.0;
+var _shibA11YGenRepTests = '1.0';
 
 // General Report output
 function writeGeneralReport(axe_results) {

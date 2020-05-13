@@ -6,7 +6,7 @@ document.A11Y_REQUIREMENTS.push('general-report-tests.js');
 document.A11Y_REQUIREMENTS.push('report-ui.js');
 
 // shibboleth for detecting loading
-var _shibA11YLibGuideRepTests = 1.0;
+var _shibA11YLibGuideRepTests = '1.0';
 
 // Lib Guide Report 
 function writeLibGuideReport(axe_results) {
