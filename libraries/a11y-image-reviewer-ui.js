@@ -59,8 +59,8 @@ function createImageReviewer()  {
 		});
 		
 		// set up vertical scroll on main
-		window.onresize = setMainHeight;
-		setMainHeight();
+		window.onresize = setImgMainHeight;
+		setImgMainHeight();
 			
 		// images and index		
 		doc._scrollX = window.scrollX;
@@ -90,7 +90,7 @@ function createImageReviewer()  {
 	return iframe;
 }
 	
-function setMainHeight() {
+function setImgMainHeight() {
 	var iframe = document.getElementById('a11y-img-viewer');
 	if(!iframe) return;
 	var doc = iframe.contentWindow.document;

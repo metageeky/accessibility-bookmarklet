@@ -57,13 +57,13 @@ function createTabbingReviewer()  {
 				this.innerHTML = '&#43;';
 				doc.getElementById('list').style.display = 'none';	
 			}
-			setMainHeight();
+			setTabMainHeight();
 		});
 
 				
 		// set up vertical scroll on main
-		window.onresize = setMainHeight;
-		setMainHeight();		
+		window.onresize = setTabMainHeight;
+		setTabMainHeight();		
 		// tabs and index
 		doc._firstTabHappened = false;
 		doc._cur = 0; // for body
@@ -280,7 +280,7 @@ function updateTabTracking(evt) {
 		doc.getElementById('alt').innerHTML = '<i>start of page</i>';
 		doc._cur = 0;
 		doc._onKnownTab = true;
-		setMainHeight();
+		setTabMainHeight();
 		moveDataBox(e);
 		moveFocusBox(e);		
 		return;
@@ -315,12 +315,12 @@ function updateTabTracking(evt) {
 		doc._onKnownTab = false;		
 	}
 	
-	setMainHeight();
+	setTabMainHeight();
 	moveDataBox(e);
 	moveFocusBox(e);
 }
 
-function setMainHeight() {
+function setTabMainHeight() {
 	var iframe = document.getElementById('a11y-tab-viewer');
 	if(!iframe) return;
 	var doc = iframe.contentWindow.document;
